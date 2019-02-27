@@ -9,11 +9,13 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 public class CreateLobbyActivity extends AppCompatActivity {
     private static final String TAG = "CreateLobbyActivity";
     private ArrayList<String> mUsers;
+    private String hostIP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +34,10 @@ public class CreateLobbyActivity extends AppCompatActivity {
             public void run() {
                 for (String user : mUsers) {
                     try{
-                        Connection.broadcast(new Socket(user, Server.APP_PORT));
+                        Socket socket = new Socket(user, Server.APP_PORT);
+                        Connection.broadcast(socket, hostIP);
                     } catch (IOException e) {
-                        Log.e(TAG, "initClient: Could not open socket on target user's device.");
+                        Log.e(TAG, "initClient: Could not broadcast to target user's device.");
                     }
                 }
             }
@@ -54,6 +57,11 @@ public class CreateLobbyActivity extends AppCompatActivity {
     private void initComponents() {
         Log.d(TAG, "initComponents: Initializing UI components.");
         mUsers = new ArrayList<>();
+        try {
+            hostIP = Utilities.getLocalIpAddress();
+        } catch (SocketException e) {
+            Log.e(TAG, "initComponents: Threw exception when finding IP address.");
+        }
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initRecyclerView();
@@ -75,7 +83,7 @@ public class CreateLobbyActivity extends AppCompatActivity {
                 try {
                     Server.get().addListener(new ServerListeners() {
                         @Override
-                        public void notifyLookingToJoin(String host, int port) {
+                        public void notifyLookingToJoin(String host) {
                             Log.d(TAG, "notifyLookingToJoin: Found user looking to join game.");
                             addUser(host);
                         }
