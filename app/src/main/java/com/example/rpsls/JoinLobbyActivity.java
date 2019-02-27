@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -19,49 +20,69 @@ import java.util.*;
 public class JoinLobbyActivity extends AppCompatActivity {
     private ArrayList<String> Hosts;
     private String SystemMsgs = "JoinLobbyActivity";
-    private int TIMEOUT;
+    private int port;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_lobby);
-//        DisplayingavailableGames();
+        DisplayingAvailableGames();
+        ListeningServer();
+        //LookingForIP();
 
     }
 
-//    public void DisplayingavailableGames() {
-//        RecyclerView Hostviewer = findViewById(R.id.HostViewer);
-//        RecyclerViewAdapter adapt = new RecyclerViewAdapter(this, Hosts);
-//        Hostviewer.setAdapter(adapt);
-//        Hostviewer.setLayoutManager(new LinearLayoutManager(this));
-//            try {
-//                Socket socket = new Socket();
-//                SocketAddress address = new InetSocketAddress(ip, port);
-//                socket.connect(address, TIMEOUT);
-//                //OPEN
-//                socket.close();
-//            } catch (UnknownHostException e) {
-//                //WRONG ADDRESS
-//            } catch (SocketTimeoutException e) {
-//                //TIMEOUT
-//            } catch (IOException e) {
-//                //CLOSED
-//            }
-//
-//    }
-        
+    public void DisplayingAvailableGames() {
+        RecyclerView HostViewer = findViewById(R.id.HostViewer);
+        RecyclerViewAdapter adapt = new RecyclerViewAdapter(this, Hosts);
+        HostViewer.setAdapter(adapt);
+        HostViewer.setLayoutManager(new LinearLayoutManager(this));
+
+    }
     //Checks if host is looking for User
-    private void LookingForJoin(){ }
+    private boolean LookingForJoin(){return true;}
+    //Looks for devices that are broadcasting their IP address
 
-    public String DisplayingavailableGames(String host,int port) {
-        List<String> ListofHostNames = new ArrayList<>();
+    //Code Adapted from
 
-        if (host.length() != 0) {
-            ListofHostNames.add(host);
-            ListofHostNames.add(String.valueOf(port));
-            return ListofHostNames.toString();
-        } else {
-            return "No hosts found";
+  /*  private int LookingForIP(){
+            int ipadd = 0;
+            try {
+                Socket socket = new Socket();
+                SocketAddress sockAddress = new InetSocketAddress(ip);
+                ((InetSocketAddress) sockAddress).getAddress();
+                socket.connect(sockAddress, TIMEOUT);
+                //OPEN
+                socket.close();
+            } catch (UnknownHostException e) {
+                //Wrong Address
+            } catch (SocketTimeoutException e) {
+                //TIMEOUT
+            } catch (IOException e) {
+                //CLOSED
+            }
+
+         return  0;
+
+        }*/
+
+        private void ListeningServer(){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        Server.get().addListener(new ServerListeners() {
+                            @Override
+                            public void notifyLookingToJoin(String host, int port) {
+
+                            }
+                        });
+                    } catch (IOException e){
+
+                    }
+                }
+            }).start();
         }
-    }
+
+
 }
