@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">RockPaperScissorsLizardSpock</string>
+    <string name="title_activity_lobby">LobbyActivity</string>
+</resources>
