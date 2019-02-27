@@ -27,7 +27,7 @@ public class JoinLobbyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_lobby);
         DisplayingAvailableGames();
-        // ListeningServer();
+        //ListeningServer();
         //LookingForIP();
 
     }
@@ -42,8 +42,12 @@ public class JoinLobbyActivity extends AppCompatActivity {
 
     //Checks if host is looking for User
     private boolean LookingForJoin() {
+        // if(InetAddress.getByName(hosts).isReachable()){
+            //Hosts.add(hosts);
+        //}
         return true;
     }
+
 }
     //Looks for devices that are broadcasting their IP address
 
