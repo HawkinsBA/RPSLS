@@ -27,7 +27,7 @@ public class JoinLobbyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_lobby);
         DisplayingAvailableGames();
-        ListeningServer();
+        // ListeningServer();
         //LookingForIP();
 
     }
@@ -39,11 +39,15 @@ public class JoinLobbyActivity extends AppCompatActivity {
         HostViewer.setLayoutManager(new LinearLayoutManager(this));
 
     }
+
     //Checks if host is looking for User
-    private boolean LookingForJoin(){return true;}
+    private boolean LookingForJoin() {
+        return true;
+    }
+}
     //Looks for devices that are broadcasting their IP address
 
-    //Code Adapted from
+    //Code Adapted from StackedOverflow
 
   /*  private int LookingForIP(){
             int ipadd = 0;
@@ -66,7 +70,7 @@ public class JoinLobbyActivity extends AppCompatActivity {
 
         }*/
 
-        private void ListeningServer(){
+   /*     private void ListeningServer(){
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -84,5 +88,6 @@ public class JoinLobbyActivity extends AppCompatActivity {
             }).start();
         }
 
+    */
 
-}
+
