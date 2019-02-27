@@ -19,13 +19,15 @@ public class SocketConnectionThread {
         this.listeners.addAll(listeners);
     }
 
+    //TODO: Ask Dr. Ferrer about two listeners. Recieve to get address of person wanting to join and
+    // broadcast for person wanting to host?
     public void run() {
         try {
-            Connection.broadcast(socket);
             String address = Connection.receive(socket);
+            Connection.broadcast(socket, address);
             socket.close();
             for (ServerListeners listener : listeners) {
-                listener.notifyLookingToJoin(address, Server.APP_PORT);
+                listener.notifyLookingToJoin(address);
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
