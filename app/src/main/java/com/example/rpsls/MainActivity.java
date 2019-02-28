@@ -2,6 +2,7 @@ package com.example.rpsls;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,9 +20,14 @@ public class MainActivity extends AppCompatActivity {
         Button createNewGameButton = findViewById(R.id.createNewGameButton);
         Button joinGameButton = findViewById(R.id.joinGameButton);
         Button howToPlay = findViewById(R.id.howToPlay);
-        final Dialog dialog = new Dialog(this);
-        final Button gotIt = findViewById(R.id.done);
-        dialog.setContentView(R.layout.howtoplaydialog);
+
+        View mView = getLayoutInflater().inflate(R.layout.how_to_play_dialog, null);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.setContentView(R.layout.how_to_play_dialog);
+
+        final Button gotIt = mView.findViewById(R.id.done);
 
         createNewGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,13 +48,16 @@ public class MainActivity extends AppCompatActivity {
         howToPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(TAG, "onClick: howToPlay pressed.");
                 dialog.show();
-                gotIt.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        finish();
-                    }
-                });
+            }
+        });
+
+        gotIt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: gotIt pressed.");
+                dialog.dismiss();
             }
         });
     }

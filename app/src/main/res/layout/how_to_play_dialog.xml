@@ -8,46 +8,42 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="360dp"
-        android:layout_height="440dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:gravity="center"
         android:text="Scissors beats Paper \n Paper covers Rock \n Rock crushes Lizard \n Lizard poisons Spock \n Spock crushes Scissors \n Scissors decapitates Lizard \n Lizard eats Paper \n Paper disproves Spock \n Spock vaporizes Rock \n Rock crushes Scissors"
         android:textColor="@android:color/black"
-        android:textSize="28dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.344" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
         android:id="@+id/done"
-        android:layout_width="162dp"
-        android:layout_height="83dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Got it!"
-        android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="365dp"
-        android:layout_height="110dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="How To Play"
-        android:textSize="50dp"
-        android:textColor="@android:color/black"
         android:gravity="center"
+        android:text="How To Play"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
