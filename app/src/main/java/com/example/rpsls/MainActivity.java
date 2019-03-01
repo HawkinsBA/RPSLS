@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText host;
     private TextView myIPView;
     private Button connect, howToPlay, gotIt;
-    private String myIP, opponentIP;
+    private String userIP, opponentIP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +40,12 @@ public class MainActivity extends AppCompatActivity {
         //TODO: Ask Dr. Ferrer why this isn't working on my device.
         try {
             Log.d(TAG, "initComponents: Setting myIPView to my IP.");
-            myIP = Utilities.getLocalIpAddress();
+            userIP = Utilities.getLocalIpAddress();
         } catch (SocketException e) {
             Log.e(TAG, "initComponents: Threw exception when finding IP address.");
         }
 
-        myIPView.setText(myIP);
+        myIPView.setText("Your IP: " + userIP);
 
         View mView = getLayoutInflater().inflate(R.layout.how_to_play_dialog, null);
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -77,15 +77,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run(){
                 try {
-                    Server s = new Server();
-                    s.addListener(new ServerListener() {
+                    Server.get().addListener(new ServerListener() {
                         @Override
-                        public void notifyConnection(String host) {
+                        public void notifyConnection(Socket target) {
                             //TODO: Process an incoming invite to a game.
-                            //opponentIP = Connection.receive(hostSocket);
+                            //opponentIP = Connection.receive(target);
                         }
                     });
-                    s.listen();
+                    Server.get().listen();
                 } catch (IOException e) {
                     Log.e(MainActivity.class.getName(), "Could not start server.");
                 }

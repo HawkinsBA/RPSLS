@@ -1,5 +1,7 @@
 package com.example.rpsls;
 
+import java.net.Socket;
+
 public interface ServerListener {
-    void notifyConnection(String host);
+    void notifyConnection(Socket target);
 }
