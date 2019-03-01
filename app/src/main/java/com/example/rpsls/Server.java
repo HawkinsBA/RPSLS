@@ -32,13 +32,13 @@ public class Server {
         this.listeners.add(listener);
     }
 
-    public void listenForJoins() throws IOException {
+    public void listen() throws IOException {
         for (;;) {
-            listenForJoinsOnce().run();
+            listenForConnections().run();
         }
     }
 
-    public SocketConnectionThread listenForJoinsOnce() throws IOException {
+    public SocketConnectionThread listenForConnections() throws IOException {
         Socket s = acceptor.accept();
         SocketConnectionThread connection = new SocketConnectionThread(s, listeners);
         return connection;

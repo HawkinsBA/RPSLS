@@ -11,7 +11,6 @@ import java.net.Socket;
   */
 
 public class Connection {
-    //Want to find out a way to broadcast a host's IP rather than the IP of the socket.
     public static void broadcast(Socket target, String address) throws IOException {
         PrintWriter sockout = new PrintWriter(target.getOutputStream());
         sockout.print(address);

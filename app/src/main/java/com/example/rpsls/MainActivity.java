@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
         gotIt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,14 +75,14 @@ public class MainActivity extends AppCompatActivity {
                     s.addListener(new ServerListener() {
                         @Override
                         public void notifyConnection(String host) {
-
+                            //TODO: Start game.
                         }
                     });
+                    s.listen();
                 } catch (IOException e) {
                     Log.e(MainActivity.class.getName(), "Could not start server.");
                 }
             }
-
         }).start();
     }
 }
