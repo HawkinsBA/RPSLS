@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         initComponents();
         initServer();
+        initClient();
     }
 
     public void initComponents() {
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         connect = findViewById(R.id.start);
         howToPlay = findViewById(R.id.howToPlay);
 
+        //TODO: Ask Dr. Ferrer why this isn't working on my device.
         try {
             Log.d(TAG, "initComponents: Setting myIPView to my IP.");
             myIPView.setText(Utilities.getLocalIpAddress());
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //TODO: Ask Dr. Ferrer why a server will not initialize on my device.
     private void initServer() {
         new Thread(new Runnable() {
             @Override
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     s.addListener(new ServerListener() {
                         @Override
                         public void notifyConnection(String host) {
-                            //TODO: Start game.
+                            //TODO: Process an incoming invite to a game.
                         }
                     });
                     s.listen();
@@ -84,5 +87,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+
+    private void initClient() {
+        connect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: Process an outgoing invite to a game.
+            }
+        });
     }
 }
