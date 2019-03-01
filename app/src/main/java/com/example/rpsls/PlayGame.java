@@ -8,25 +8,9 @@ import java.net.Socket;
 
 public class PlayGame {
 
-    private void setUpServer(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-            }
-        });
-        try{
-            Server.get().addListener(new ServerListener() {
-                @Override
-                public void notifyConnection(String host) {
-
-                }
-            });
-            Server.get().listen();
-        }
-        catch (IOException e){
-            Log.e(GameScreen.class.getName(), "Could not connect to server");
-        }
-    }
+    //set up methods to receive and send moves and make sure to
+    //save opponents move in a variable before revealing the thread to
+    //the user that the client is sending the move to or in the TextView
 
     public static void sendMove(final String move, final String host, final int port){
         new Thread(){
@@ -35,7 +19,6 @@ public class PlayGame {
                 try{
                     Socket target = new Socket(host, port);
                     Connection.broadcast(target, move);
-                    String opponentsMove = Connection.receive(target);
                 }
                 catch(final Exception e){
 
@@ -43,6 +26,8 @@ public class PlayGame {
             }
         };
     }
+
+    public static void receiveMove()
 
 
 }

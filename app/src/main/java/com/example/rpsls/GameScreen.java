@@ -6,18 +6,27 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.net.Socket;
+
 public class GameScreen extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_screen);
 
+        setUpServer();
+
         final TextView clientIP = findViewById(R.id.opponentIP);
+        TextView result = findViewById(R.id.roundResult);
+        String opponentMove;
 
         Button rock = findViewById(R.id.rock);
         Button paper = findViewById(R.id.paper);
@@ -25,6 +34,7 @@ public class GameScreen extends AppCompatActivity {
         Button lizard = findViewById(R.id.lizard);
         Button spock = findViewById(R.id.spock);
         Button quit = findViewById(R.id.quitButton);
+
 
         rock.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +95,31 @@ public class GameScreen extends AppCompatActivity {
                 quitPressed.show();
             }
         });
+    }
+
+    private void setUpServer(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+            }
+        });
+        try{
+            Server.get().addListener(new ServerListener() {
+                @Override
+                public void notifyConnection(Socket target) {
+                    try{
+                        String opponentMove = Connection.receive(target);
+                    }
+                    catch (IOException e){
+                        Log.e(GameScreen.class.getName(), "Opponents move could not be received");
+                    }
+                }
+            });
+            Server.get().listen();
+        }
+        catch (IOException e){
+            Log.e(GameScreen.class.getName(), "Could not connect to server");
+        }
     }
 
 }
