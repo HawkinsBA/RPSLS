@@ -23,7 +23,7 @@
         app:layout_constraintVertical_bias="0.163" />
 
     <Button
-        android:id="@+id/rockButton"
+        android:id="@+id/rock"
         android:layout_width="283dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
@@ -39,7 +39,7 @@
         app:layout_constraintVertical_bias="0.624" />
 
     <Button
-        android:id="@+id/paperButton"
+        android:id="@+id/paper"
         android:layout_width="283dp"
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
@@ -55,7 +55,7 @@
         app:layout_constraintVertical_bias="0.717" />
 
     <Button
-        android:id="@+id/scissorsButton"
+        android:id="@+id/scissors"
         android:layout_width="283dp"
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
@@ -71,7 +71,7 @@
         app:layout_constraintVertical_bias="0.8" />
 
     <Button
-        android:id="@+id/lizardButton"
+        android:id="@+id/lizard"
         android:layout_width="283dp"
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
@@ -87,7 +87,7 @@
         app:layout_constraintVertical_bias="0.903" />
 
     <Button
-        android:id="@+id/Spock"
+        android:id="@+id/spock"
         android:layout_width="283dp"
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
@@ -180,5 +180,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.49" />
+
+    <TextView
+        android:id="@+id/opponentIP"
+        android:layout_width="153dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:text="IP: "
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/opponent" />
 
 </android.support.constraint.ConstraintLayout>
