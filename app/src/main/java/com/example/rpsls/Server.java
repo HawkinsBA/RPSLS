@@ -22,13 +22,13 @@ public class Server {
     }
 
     private ServerSocket acceptor;
-    private ArrayList<ServerListeners> listeners = new ArrayList<>();
+    private ArrayList<ServerListener> listeners = new ArrayList<>();
 
     public Server() throws IOException {
         acceptor = new ServerSocket(APP_PORT);
     }
 
-    public void addListener(ServerListeners listener) {
+    public void addListener(ServerListener listener) {
         this.listeners.add(listener);
     }
 

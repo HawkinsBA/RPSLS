@@ -12,9 +12,9 @@ import java.util.ArrayList;
 
 public class SocketConnectionThread {
     private Socket socket;
-    private ArrayList<ServerListeners> listeners = new ArrayList<>();
+    private ArrayList<ServerListener> listeners = new ArrayList<>();
 
-    public SocketConnectionThread(Socket socket, ArrayList<ServerListeners> listeners) {
+    public SocketConnectionThread(Socket socket, ArrayList<ServerListener> listeners) {
         this.socket = socket;
         this.listeners.addAll(listeners);
     }
@@ -24,8 +24,8 @@ public class SocketConnectionThread {
             String address = Connection.receive(socket);
             Connection.broadcast(socket, address);
             socket.close();
-            for (ServerListeners listener : listeners) {
-                listener.notifyLookingToJoin(address);
+            for (ServerListener listener : listeners) {
+                listener.notifyConnection(address);
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
