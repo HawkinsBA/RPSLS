@@ -10,14 +10,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.net.SocketException;
 
 public class MainActivity extends AppCompatActivity {
     final static String TAG = "MainActivity";
 
-    private EditText host, port;
+    private EditText host;
     private TextView myIPView;
     private Button connect, howToPlay, gotIt;
+    private String myIP, opponentIP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,17 +34,18 @@ public class MainActivity extends AppCompatActivity {
     public void initComponents() {
         myIPView = findViewById(R.id.myIPView);
         host = findViewById(R.id.host);
-        port = findViewById(R.id.port);
         connect = findViewById(R.id.start);
         howToPlay = findViewById(R.id.howToPlay);
 
         //TODO: Ask Dr. Ferrer why this isn't working on my device.
         try {
             Log.d(TAG, "initComponents: Setting myIPView to my IP.");
-            myIPView.setText(Utilities.getLocalIpAddress());
+            myIP = Utilities.getLocalIpAddress();
         } catch (SocketException e) {
             Log.e(TAG, "initComponents: Threw exception when finding IP address.");
         }
+
+        myIPView.setText(myIP);
 
         View mView = getLayoutInflater().inflate(R.layout.how_to_play_dialog, null);
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -79,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void notifyConnection(String host) {
                             //TODO: Process an incoming invite to a game.
+                            //opponentIP = Connection.receive(hostSocket);
                         }
                     });
                     s.listen();
@@ -93,8 +97,33 @@ public class MainActivity extends AppCompatActivity {
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Process an outgoing invite to a game.
+                sendInvite(host.getText().toString(), Server.APP_PORT);
             }
         });
+    }
+
+    private void sendInvite(final String hostIP, final int appPort) {
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Socket hostSocket = new Socket(hostIP, appPort);
+                    Connection.broadcast(hostSocket, myIPView.getText().toString());
+                    //opponentIP = Connection.receive(hostSocket); Don't need to get opp's IP, but probably want to store it
+                    //when processing an invite from them.
+                    hostSocket.close(); //We actually probably don't want to close the socket here but I'll leave this for now.
+                    //We probably want to wait for a notifier from the server indicating accept/decline.
+                } catch (final Exception e) {
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Utilities.notifyException(MainActivity.this, e);
+                        }
+                    });
+                }
+
+            }
+        }.start();
+
     }
 }
