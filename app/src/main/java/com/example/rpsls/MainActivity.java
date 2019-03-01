@@ -7,17 +7,25 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.net.SocketException;
 
 public class MainActivity extends AppCompatActivity {
     final static String TAG = "MainActivity";
+
+    private EditText host, port;
+    private TextView myIPView;
+    private Button connect, howToPlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button createNewGameButton = findViewById(R.id.createNewGameButton);
-        Button joinGameButton = findViewById(R.id.joinGameButton);
+        initComponents();
+
         Button howToPlay = findViewById(R.id.howToPlay);
 
         View mView = getLayoutInflater().inflate(R.layout.how_to_play_dialog, null);
@@ -27,22 +35,6 @@ public class MainActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.how_to_play_dialog);
 
         final Button gotIt = mView.findViewById(R.id.done);
-
-        createNewGameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent lobby = new Intent(MainActivity.this, CreateLobbyActivity.class);
-                startActivity(lobby);
-            }
-        });
-
-        joinGameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent joinLobby = new Intent(MainActivity.this, JoinLobbyActivity.class);
-                startActivity(joinLobby);
-            }
-        });
 
         howToPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,5 +51,18 @@ public class MainActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+    }
+
+    public void initComponents() {
+        myIPView = findViewById(R.id.myIPView);
+        host = findViewById(R.id.host);
+        port = findViewById(R.id.port);
+        connect = findViewById(R.id.start);
+
+        try {
+            myIPView.setText(Utilities.getLocalIpAddress());
+        } catch (SocketException e) {
+            Log.e("MainActivity", "Threw exception when finding ip address");
+        }
     }
 }

@@ -8,12 +8,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".JoinLobbyActivity"></activity>
         <activity android:name=".GameScreen" />
-        <activity
-            android:name=".CreateLobbyActivity"
-            android:label="@string/title_activity_lobby"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

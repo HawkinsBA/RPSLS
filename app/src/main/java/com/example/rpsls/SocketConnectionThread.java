@@ -19,8 +19,6 @@ public class SocketConnectionThread {
         this.listeners.addAll(listeners);
     }
 
-    //TODO: Ask Dr. Ferrer about two listeners. Recieve to get address of person wanting to join and
-    // broadcast for person wanting to host?
     public void run() {
         try {
             String address = Connection.receive(socket);
