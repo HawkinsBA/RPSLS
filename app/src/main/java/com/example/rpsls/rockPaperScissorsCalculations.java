@@ -11,7 +11,7 @@ public class rockPaperScissorsCalculations {
     */
 
     public static int playerChoices (String userChoice, String opponentChoice){
-        int winOrLose = 0; //0 = tie, 1 = user wins, 2 = user loses
+        int winOrLose = 0; //0 = tie, 1 = user wins/opponent loses, 2 = user loses/opponent wins
         if(userChoice == "rock"){
             if (opponentChoice == "scissors" || opponentChoice == "lizard"){
                 winOrLose = 1;
