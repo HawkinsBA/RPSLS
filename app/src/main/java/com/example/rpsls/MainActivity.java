@@ -1,5 +1,6 @@
 package com.example.rpsls;
 
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,9 +17,9 @@ import java.net.SocketException;
 public class MainActivity extends AppCompatActivity {
     final static String TAG = "MainActivity";
 
-    private EditText host;
-    private TextView myIPView;
-    private Button connect, howToPlay, gotIt;
+    private EditText targetIP;
+    private TextView myIPView, inviteText;
+    private Button connect, howToPlay, gotIt, accept, decline;
     private String userIP, opponentIP;
 
     @Override
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void initComponents() {
         myIPView = findViewById(R.id.myIPView);
-        host = findViewById(R.id.host);
+        targetIP = findViewById(R.id.host);
         connect = findViewById(R.id.start);
         howToPlay = findViewById(R.id.howToPlay);
 
@@ -46,19 +47,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         myIPView.setText("Your IP: " + userIP);
+        View howToPlayView = getLayoutInflater().inflate(R.layout.how_to_play_dialog, null);
+        AlertDialog.Builder howToPlayBuilder = new AlertDialog.Builder(MainActivity.this);
+        howToPlayBuilder.setView(howToPlayView);
+        final AlertDialog howToPlayDialog = howToPlayBuilder.create();
+        howToPlayDialog.setContentView(R.layout.how_to_play_dialog);
+        gotIt = howToPlayView.findViewById(R.id.done);
 
-        View mView = getLayoutInflater().inflate(R.layout.how_to_play_dialog, null);
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.setContentView(R.layout.how_to_play_dialog);
-        gotIt = mView.findViewById(R.id.done);
 
         howToPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: howToPlay pressed.");
-                dialog.show();
+                howToPlayDialog.show();
             }
         });
 
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: gotIt pressed.");
-                dialog.dismiss();
+                howToPlayDialog.dismiss();
             }
         });
     }
@@ -79,9 +80,9 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Server.get().addListener(new ServerListener() {
                         @Override
-                        public void notifyConnection(Socket target) {
-                            //TODO: Process an incoming invite to a game.
-                            //opponentIP = Connection.receive(target);
+                        public void notifyConnection(String incomingIP) {
+                            Log.d(TAG, "notifyConnection: Connection received.");
+                            processInvite(incomingIP);
                         }
                     });
                     Server.get().listen();
@@ -92,26 +93,69 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void initClient() {
-        connect.setOnClickListener(new View.OnClickListener() {
+    private void processInvite(final String incomingIP) {
+        Log.d(TAG, "processInvite: Processing incoming invite.");
+        runOnUiThread(new Runnable() {
             @Override
-            public void onClick(View view) {
-                sendInvite(host.getText().toString(), Server.APP_PORT);
+            public void run() {
+                initInviteDialog(incomingIP).show();
             }
         });
     }
 
-    private void sendInvite(final String hostIP, final int appPort) {
+    private AlertDialog initInviteDialog(final String incomingIP) {
+        Log.d(TAG, "initInviteDialog: Initializing invite dialog.");
+        View inviteView = getLayoutInflater().inflate(R.layout.invite_dialog, null);
+        AlertDialog.Builder inviteBuilder = new AlertDialog.Builder(MainActivity.this);
+        inviteBuilder.setView(inviteView);
+        final AlertDialog inviteDialog = inviteBuilder.create();
+        inviteDialog.setContentView(R.layout.invite_dialog);
+
+        accept = inviteView.findViewById(R.id.accept);
+        decline = inviteView.findViewById(R.id.decline);
+        inviteText = inviteView.findViewById(R.id.inviteText);
+        inviteText.setText(incomingIP + " would like to start a game with you.");
+
+        decline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: Incoming invite denied.");
+                inviteDialog.dismiss();
+            }
+        });
+
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: Incoming invite accepted.");
+                opponentIP = incomingIP;
+                Intent toGameIntent = new Intent(MainActivity.this, GameScreen.class);
+                toGameIntent.putExtra("opponentIP", opponentIP);
+                startActivity(toGameIntent);
+            }
+        });
+
+        return inviteDialog;
+    }
+
+    private void initClient() {
+        connect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendInvite(targetIP.getText().toString());
+            }
+        });
+    }
+
+    //Broadcast our IP to the user with the target IP.
+    private void sendInvite(final String targetIP) {
         new Thread() {
             @Override
             public void run() {
                 try {
-                    Socket hostSocket = new Socket(hostIP, appPort);
+                    Socket hostSocket = new Socket(targetIP, Server.APP_PORT);
                     Connection.broadcast(hostSocket, myIPView.getText().toString());
-                    //opponentIP = Connection.receive(hostSocket); Don't need to get opp's IP, but probably want to store it
-                    //when processing an invite from them.
-                    hostSocket.close(); //We actually probably don't want to close the socket here but I'll leave this for now.
-                    //We probably want to wait for a notifier from the server indicating accept/decline.
+                    hostSocket.close(); //I'm not sure want to close the socket here but I'll leave this for now.
                 } catch (final Exception e) {
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override

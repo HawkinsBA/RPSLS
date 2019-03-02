@@ -22,7 +22,7 @@ public class GameScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_screen);
 
-        setUpServer();
+        //setUpServer();
 
         final TextView clientIP = findViewById(R.id.opponentIP);
         TextView result = findViewById(R.id.roundResult);
@@ -97,6 +97,7 @@ public class GameScreen extends AppCompatActivity {
         });
     }
 
+    /*
     private void setUpServer(){
         new Thread(new Runnable() {
             @Override
@@ -121,5 +122,6 @@ public class GameScreen extends AppCompatActivity {
             Log.e(GameScreen.class.getName(), "Could not connect to server");
         }
     }
+    */
 
 }
