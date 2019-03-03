@@ -42,11 +42,12 @@ public class MainActivity extends AppCompatActivity {
         try {
             Log.d(TAG, "initComponents: Setting myIPView to my IP.");
             userIP = Utilities.getLocalIpAddress();
+            myIPView.setText("Your IP: " + userIP);
         } catch (SocketException e) {
             Log.e(TAG, "initComponents: Threw exception when finding IP address.");
+            myIPView.setText("Could not determine your IP address.");
         }
 
-        myIPView.setText("Your IP: " + userIP);
         View howToPlayView = getLayoutInflater().inflate(R.layout.how_to_play_dialog, null);
         AlertDialog.Builder howToPlayBuilder = new AlertDialog.Builder(MainActivity.this);
         howToPlayBuilder.setView(howToPlayView);
