@@ -84,6 +84,11 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, "notifyConnection: Connection received.");
                             processIncomingInvite(incomingIP);
                         }
+
+                        @Override
+                        public void notifyInviteResolution(boolean inviteAccepted) {
+                            processOutgoingInvite(inviteAccepted);
+                        }
                     });
                     Server.get().listen();
                 } catch (IOException e) {
@@ -93,23 +98,32 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
+    //TODO: Finish this method.
+    private void processOutgoingInvite(boolean inviteAccepted) {
+        if (inviteAccepted) {
+
+        } else {
+
+        }
+    }
+
     private void processIncomingInvite(final String incomingIP) {
         Log.d(TAG, "processInvite: Processing incoming invite.");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                initInviteDialog(incomingIP).show();
+                initIncomingInviteDialog(incomingIP).show();
             }
         });
     }
 
-    private AlertDialog initInviteDialog(final String incomingIP) {
+    private AlertDialog initIncomingInviteDialog(final String incomingIP) {
         Log.d(TAG, "initInviteDialog: Initializing invite dialog.");
         View inviteView = getLayoutInflater().inflate(R.layout.invite_dialog, null);
         AlertDialog.Builder inviteBuilder = new AlertDialog.Builder(MainActivity.this);
         inviteBuilder.setView(inviteView);
-        final AlertDialog inviteDialog = inviteBuilder.create();
-        inviteDialog.setContentView(R.layout.invite_dialog);
+        final AlertDialog incomingInviteDialog = inviteBuilder.create();
+        incomingInviteDialog.setContentView(R.layout.invite_dialog);
 
         accept = inviteView.findViewById(R.id.accept);
         decline = inviteView.findViewById(R.id.decline);
@@ -120,7 +134,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Incoming invite denied.");
-                inviteDialog.dismiss();
+                resolveInvite(incomingIP, false);
+                incomingInviteDialog.dismiss();
             }
         });
 
@@ -128,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Incoming invite accepted.");
+                resolveInvite(incomingIP, true);
                 opponentIP = incomingIP;
                 Intent toGameIntent = new Intent(MainActivity.this, GameScreen.class);
                 toGameIntent.putExtra("opponentIP", opponentIP);
@@ -135,8 +151,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        return inviteDialog;
+        return incomingInviteDialog;
     }
+
+
 
     private void initClient() {
         connect.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //Broadcast our IP to the user with the target IP.
     private void sendInvite(final String targetIP) {
         new Thread() {
             @Override
@@ -156,7 +173,26 @@ public class MainActivity extends AppCompatActivity {
                     Socket hostSocket = new Socket(targetIP, Server.APP_PORT);
                     Connection.broadcast(hostSocket, myIPView.getText().toString());
                     hostSocket.close();
-                    //TODO: Process the outgoing invite to take inviter to game screen if target user accepts.
+                } catch (final Exception e) {
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Utilities.notifyException(MainActivity.this, e);
+                        }
+                    });
+                }
+            }
+        }.start();
+    }
+
+    private void resolveInvite(final String incomingIP, final boolean accept) {
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Socket socket = new Socket(incomingIP, Server.APP_PORT);
+                    Invite.resolve(socket, accept);
+                    socket.close();
                 } catch (final Exception e) {
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
@@ -168,6 +204,5 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }.start();
-
     }
 }

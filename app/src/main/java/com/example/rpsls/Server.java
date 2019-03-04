@@ -34,7 +34,14 @@ public class Server {
     public void listen() throws IOException {
         for (;;) {
             listenForConnections().run();
+            listenForInviteResolutions().run();
         }
+    }
+
+    public InviteResolutionThread listenForInviteResolutions() throws IOException {
+        Socket s = acceptor.accept();
+        InviteResolutionThread resolution = new InviteResolutionThread(s, listeners);
+        return resolution;
     }
 
     public SocketConnectionThread listenForConnections() throws IOException {
