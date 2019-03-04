@@ -22,7 +22,7 @@ public class GameScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_screen);
 
-        //setUpServer();
+        setUpServer();
 
         final TextView clientIP = findViewById(R.id.opponentIP);
         TextView result = findViewById(R.id.roundResult);
@@ -99,10 +99,8 @@ public class GameScreen extends AppCompatActivity {
         });
     }
 
-    /*
+
     private void setUpServer(){
-        final boolean moveReceived = false;
-        boolean moveSent = false;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -113,7 +111,9 @@ public class GameScreen extends AppCompatActivity {
                 @Override
                 public void notifyConnection(String target) {
                     try{
-                        String opponentMove = Connection.receive(target);
+                        Socket hostSocket = new Socket(target, Server.APP_PORT);
+                        String opponentMove = Connection.receive(hostSocket);
+                        //if ()
                     }
                     catch (IOException e){
                         Log.e(GameScreen.class.getName(), "Opponents move could not be received");
@@ -128,6 +128,5 @@ public class GameScreen extends AppCompatActivity {
 
 
     }
-   */
 
 }
