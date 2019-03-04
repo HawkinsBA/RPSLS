@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         connect = findViewById(R.id.start);
         howToPlay = findViewById(R.id.howToPlay);
 
-        //TODO: Ask Dr. Ferrer why this isn't working on my device.
         try {
             Log.d(TAG, "initComponents: Setting myIPView to my IP.");
             userIP = Utilities.getLocalIpAddress();
@@ -73,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //TODO: Ask Dr. Ferrer why a server will not initialize on my device.
     private void initServer() {
         new Thread(new Runnable() {
             @Override
@@ -84,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void notifyConnection(String incomingIP) {
                             Log.d(TAG, "notifyConnection: Connection received.");
-                            processInvite(incomingIP);
+                            processIncomingInvite(incomingIP);
                         }
                     });
                     Server.get().listen();
@@ -95,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void processInvite(final String incomingIP) {
+    private void processIncomingInvite(final String incomingIP) {
         Log.d(TAG, "processInvite: Processing incoming invite.");
         runOnUiThread(new Runnable() {
             @Override
@@ -157,7 +155,8 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Socket hostSocket = new Socket(targetIP, Server.APP_PORT);
                     Connection.broadcast(hostSocket, myIPView.getText().toString());
-                    hostSocket.close(); //I'm not sure want to close the socket here but I'll leave this for now.
+                    hostSocket.close();
+                    //TODO: Process the outgoing invite to take inviter to game screen if target user accepts.
                 } catch (final Exception e) {
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
