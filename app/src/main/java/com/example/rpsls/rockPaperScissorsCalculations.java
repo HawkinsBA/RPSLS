@@ -10,61 +10,61 @@ public class rockPaperScissorsCalculations {
     choices to see who wins or if it is a tie.
     */
 
-    public static int playerChoices (String userChoice, String opponentChoice){
-        int winOrLose = 0; //0 = tie, 1 = user wins/opponent loses, 2 = user loses/opponent wins
+    public static String playerChoices (String userChoice, String opponentChoice){
+        String winOrLose = "Play!"; //0 = tie, 1 = user wins/opponent loses, 2 = user loses/opponent wins
         if(userChoice == "rock"){
             if (opponentChoice == "scissors" || opponentChoice == "lizard"){
-                winOrLose = 1;
+                winOrLose = "Rock beats" + " " + opponentChoice + "!";
             }
             else if (opponentChoice == "spock" || opponentChoice == "paper"){
-                winOrLose = 2;
+                winOrLose = "Rock lost to" + " " + opponentChoice + "!";
             }
             else if (opponentChoice == "rock"){
-                winOrLose = 0;
+                winOrLose = "It's a tie!";
             }
         }
         else if(userChoice == "paper"){
             if (opponentChoice == "rock" || opponentChoice == "spock"){
-                winOrLose = 1;
+                winOrLose = "Paper beats" + " " + opponentChoice + "!";
             }
             else if (opponentChoice == "scissors" || opponentChoice == "lizard"){
-                winOrLose = 2;
+                winOrLose = "Paper lost to" + " " + opponentChoice + "!";
             }
             else if (opponentChoice == "paper"){
-                winOrLose = 0;
+                winOrLose = "It's a tie!";
             }
         }
         else if(userChoice == "scissors"){
             if (opponentChoice == "paper" || opponentChoice == "lizard"){
-                winOrLose = 1;
+                winOrLose = "Scissors beats" + " " + opponentChoice + "!";
             }
             else if (opponentChoice == "spock" || opponentChoice == "rock"){
-                winOrLose = 2;
+                winOrLose = "Scissors lost to" + " " + opponentChoice + "!";
             }
             else if (opponentChoice == "scissors"){
-                winOrLose = 0;
+                winOrLose = "It's a tie!";
             }
         }
         else if(userChoice == "lizard"){
             if (opponentChoice == "paper" || opponentChoice == "spock"){
-                winOrLose = 1;
+                winOrLose = "Lizard beats" + " " + opponentChoice + "!";
             }
             else if (opponentChoice == "scissors" || opponentChoice == "rock"){
-                winOrLose = 2;
+                winOrLose = "Lizard lost to" + " " + opponentChoice + "!";
             }
             else if (opponentChoice == "lizard"){
-                winOrLose = 0;
+                winOrLose = "It's a tie!";
             }
         }
         else if(userChoice == "spock"){
             if (opponentChoice == "rock" || opponentChoice == "scissors"){
-                winOrLose = 1;
+                winOrLose = "Spock beats" + " " + opponentChoice + "!";
             }
             else if (opponentChoice == "paper" || opponentChoice == "lizard"){
-                winOrLose = 2;
+                winOrLose = "Spock lost to" + " " + opponentChoice + "!";
             }
             else if (opponentChoice == "spock"){
-                winOrLose = 0;
+                winOrLose = "It's a tie!";
             }
         }
         return winOrLose;
