@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.net.Socket;
 
@@ -99,6 +101,21 @@ public class GameScreen extends AppCompatActivity {
         });
     }
 
+    public void moveSent(boolean moveSent, String move){
+
+        moveSent = true;
+    }
+
+    public void calculateWinner(final String userChoice, final String opponentChoice, final TextView showResult){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String result = rockPaperScissorsCalculations.playerChoices(userChoice, opponentChoice);
+                showResult.setText(result);
+            }
+        });
+    }
+
 
     private void setUpServer(){
         new Thread(new Runnable() {
@@ -113,7 +130,6 @@ public class GameScreen extends AppCompatActivity {
                     try{
                         Socket hostSocket = new Socket(target, Server.APP_PORT);
                         String opponentMove = Connection.receive(hostSocket);
-                        //if ()
                     }
                     catch (IOException e){
                         Log.e(GameScreen.class.getName(), "Opponents move could not be received");
@@ -121,11 +137,11 @@ public class GameScreen extends AppCompatActivity {
                 }
             });
             Server.get().listen();
+
         }
         catch (IOException e){
             Log.e(GameScreen.class.getName(), "Could not connect to server");
         }
-
 
     }
 
