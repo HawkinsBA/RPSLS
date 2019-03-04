@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run(){
                 try {
+                    Log.d(TAG, "initServer: Setting up server.");
                     Server.get().addListener(new ServerListener() {
                         @Override
                         public void notifyConnection(String incomingIP) {
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                     Server.get().listen();
                 } catch (IOException e) {
-                    Log.e(MainActivity.class.getName(), "Could not start server.");
+                    Log.e(TAG, "initServer: Could not start server.");
                 }
             }
         }).start();
