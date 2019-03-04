@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText targetIP;
     private TextView myIPView, inviteText;
     private Button connect, howToPlay, gotIt, accept, decline;
-    private String userIP, opponentIP;
+    private String userIP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,9 +144,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Incoming invite accepted.");
                 resolveInvite(incomingIP, true);
-                opponentIP = incomingIP;
                 Intent toGameIntent = new Intent(MainActivity.this, GameScreen.class);
-                toGameIntent.putExtra("opponentIP", opponentIP);
+                toGameIntent.putExtra("opponentIP", incomingIP);
                 startActivity(toGameIntent);
             }
         });
