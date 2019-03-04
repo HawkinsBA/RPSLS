@@ -12,8 +12,10 @@ public class PlayGame {
     //save opponents move in a variable before revealing the string to
     //the user that the client is sending the move to or in the TextView
 
+
+
     public static void sendMove(final String move, final String host, final int port){
-        new Thread(new Runnable() {
+        new Thread(new Runnable() { //runOnUiThread?
             @Override
             public void run(){
                 try{
@@ -21,7 +23,8 @@ public class PlayGame {
                     Connection.broadcast(target, move);
                 }
                 catch(final Exception e){
-
+                   // Utilities.notifyException(GameScreen.class.getName(), );
+                    Log.e(GameScreen.class.getName(), "Could not send move");
                 }
             }
         });

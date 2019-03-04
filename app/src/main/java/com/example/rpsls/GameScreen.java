@@ -27,6 +27,8 @@ public class GameScreen extends AppCompatActivity {
         final TextView clientIP = findViewById(R.id.opponentIP);
         TextView result = findViewById(R.id.roundResult);
         String opponentMove;
+        final String userMove;
+        final boolean moveSent = false;
 
         Button rock = findViewById(R.id.rock);
         Button paper = findViewById(R.id.paper);
@@ -99,6 +101,8 @@ public class GameScreen extends AppCompatActivity {
 
     /*
     private void setUpServer(){
+        final boolean moveReceived = false;
+        boolean moveSent = false;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -107,7 +111,7 @@ public class GameScreen extends AppCompatActivity {
         try{
             Server.get().addListener(new ServerListener() {
                 @Override
-                public void notifyConnection(Socket target) {
+                public void notifyConnection(String target) {
                     try{
                         String opponentMove = Connection.receive(target);
                     }
@@ -121,7 +125,9 @@ public class GameScreen extends AppCompatActivity {
         catch (IOException e){
             Log.e(GameScreen.class.getName(), "Could not connect to server");
         }
+
+
     }
-    */
+   */
 
 }
