@@ -18,8 +18,8 @@ public class MainActivity extends AppCompatActivity {
     final static String TAG = "MainActivity";
 
     private EditText targetIP;
-    private TextView myIPView, inviteText;
-    private Button connect, howToPlay, gotIt, accept, decline;
+    private TextView myIPView, inviteText, inviteResText;
+    private Button connect, howToPlay, gotIt, accept, decline, resolve;
     private String userIP;
 
     @Override
@@ -99,12 +99,48 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //TODO: Finish this method.
-    private void processOutgoingInvite(boolean inviteAccepted) {
+    private void processOutgoingInvite(final boolean inviteAccepted) {
+        Log.d(TAG, "processOutgoingInvite: Resolving outgoing invite.");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                initInviteResolutionDialog(inviteAccepted).show();
+            }
+        });
+    }
+
+    private AlertDialog initInviteResolutionDialog(boolean inviteAccepted) {
+        Log.d(TAG, "initInviteResolutionDialog: Initializing invite resolution dialog.");
+        View resolutionView = getLayoutInflater().inflate(R.layout.invite_resolution_dialog, null);
+        AlertDialog.Builder resolutionBuilder = new AlertDialog.Builder(MainActivity.this);
+        resolutionBuilder.setView(resolutionView);
+        final AlertDialog inviteResolutionDialog = resolutionBuilder.create();
+        inviteResolutionDialog.setContentView(R.layout.invite_resolution_dialog);
+
+        final String opponentIP = targetIP.getText().toString();
+        resolve = resolutionView.findViewById(R.id.resolve);
+        inviteResText = resolutionView.findViewById(R.id.inviteResText);
+
         if (inviteAccepted) {
-
+            inviteResText.setText(opponentIP + " has accepted your invite.");
+            resolve.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent toGameIntent = new Intent(MainActivity.this, GameScreen.class);
+                    toGameIntent.putExtra("opponentIP", opponentIP);
+                    startActivity(toGameIntent);
+                }
+            });
         } else {
-
+            inviteResText.setText(opponentIP + " has refused your invite.");
+            resolve.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    inviteResolutionDialog.dismiss();
+                }
+            });
         }
+        return inviteResolutionDialog;
     }
 
     private void processIncomingInvite(final String incomingIP) {
@@ -127,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
         accept = inviteView.findViewById(R.id.accept);
         decline = inviteView.findViewById(R.id.decline);
-        inviteText = inviteView.findViewById(R.id.inviteText);
+        inviteText = inviteView.findViewById(R.id.inviteResText);
         inviteText.setText(incomingIP + " would like to start a game with you.");
 
         decline.setOnClickListener(new View.OnClickListener() {
