@@ -127,14 +127,12 @@ public class GameScreen extends AppCompatActivity {
                                 Log.e(GameScreen.class.getName(), "Opponents move could not be received");
                             }
                         }
-
                         @Override
                         public void notifyInviteResolution(boolean accept) {
 
                         }
                     });
                     Server.get().listen();
-
                 }
                 catch (IOException e){
                     Log.e(GameScreen.class.getName(), "Could not connect to server");

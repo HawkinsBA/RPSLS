@@ -7,36 +7,27 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/decline"
+        android:id="@+id/resolve"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Decline"
-        app:layout_constraintEnd_toStartOf="@+id/accept"
-        app:layout_constraintHorizontal_bias="0.024"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inviteResText" />
-
-    <Button
-        android:id="@+id/accept"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:text="Accept"
+        android:layout_marginBottom="8dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inviteResText" />
 
     <TextView
         android:id="@+id/inviteResText"
-        android:layout_width="375dp"
-        android:layout_height="156dp"
+        android:layout_width="wrap_content"
+        android:layout_height="17dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="[Incoming IP] would like to start a game with you."
+        android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
