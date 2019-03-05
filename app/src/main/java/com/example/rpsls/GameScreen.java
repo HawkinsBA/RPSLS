@@ -18,6 +18,7 @@ import java.net.Socket;
 
 public class GameScreen extends AppCompatActivity {
 
+    private TextView opponentMove;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,16 +29,14 @@ public class GameScreen extends AppCompatActivity {
 
         final TextView clientIP = findViewById(R.id.opponentIP);
         TextView result = findViewById(R.id.roundResult);
-        String opponentMove;
-        final String userMove;
-        final boolean moveSent = false;
-
         Button rock = findViewById(R.id.rock);
         Button paper = findViewById(R.id.paper);
         Button scissors = findViewById(R.id.scissors);
         Button lizard = findViewById(R.id.lizard);
         Button spock = findViewById(R.id.spock);
         Button quit = findViewById(R.id.quitButton);
+        final TextView userMove = findViewById(R.id.userMove);
+        opponentMove = findViewById(R.id.opponentMove);
 
 
         rock.setOnClickListener(new View.OnClickListener() {
@@ -101,47 +100,47 @@ public class GameScreen extends AppCompatActivity {
         });
     }
 
-    public void moveSent(boolean moveSent, String move){
-
-        moveSent = true;
-    }
-
-    public void calculateWinner(final String userChoice, final String opponentChoice, final TextView showResult){
+    public void setOpponentMoveToTextView(final String move, final TextView userMove){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String result = rockPaperScissorsCalculations.playerChoices(userChoice, opponentChoice);
-                showResult.setText(result);
+                userMove.setText(move);
             }
         });
     }
-
 
     private void setUpServer(){
         new Thread(new Runnable() {
             @Override
             public void run() {
-            }
-        });
-        try{
-            Server.get().addListener(new ServerListener() {
-                @Override
-                public void notifyConnection(String target) {
-                    try{
-                        Socket hostSocket = new Socket(target, Server.APP_PORT);
-                        String opponentMove = Connection.receive(hostSocket);
-                    }
-                    catch (IOException e){
-                        Log.e(GameScreen.class.getName(), "Opponents move could not be received");
-                    }
-                }
-            });
-            Server.get().listen();
+                try{
+                    Server.get().addListener(new ServerListener() {
+                        @Override
+                        public void notifyConnection(String target) {
+                            try{
+                                Socket hostSocket = new Socket(target, Server.APP_PORT);
+                                String clientMove = Connection.receive(hostSocket);
+                                setOpponentMoveToTextView(clientMove, opponentMove);
 
-        }
-        catch (IOException e){
-            Log.e(GameScreen.class.getName(), "Could not connect to server");
-        }
+                            }
+                            catch (IOException e){
+                                Log.e(GameScreen.class.getName(), "Opponents move could not be received");
+                            }
+                        }
+
+                        @Override
+                        public void notifyInviteResolution(boolean accept) {
+
+                        }
+                    });
+                    Server.get().listen();
+
+                }
+                catch (IOException e){
+                    Log.e(GameScreen.class.getName(), "Could not connect to server");
+                }
+            }
+        }).start();
 
     }
 

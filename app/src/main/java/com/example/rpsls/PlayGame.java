@@ -16,11 +16,41 @@ public class PlayGame extends GameScreen{
     save opponents move in a variable before revealing the string to
     the user that the client is sending the move to or in the TextView */
 
+    private static GameScreen activity;
 
-
+    public PlayGame(GameScreen activity){
+        this.activity = activity;
+    }
 
     public static void sendMove(final String move, final String host, final int port){
-        
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Socket target = new Socket(host, port);
+                    Connection.broadcast(target, move);
+                    target.close();
+                }
+                catch(final Exception e){
+                    // Utilities.notifyException(GameScreen.class.getName(), );
+                    Log.e(GameScreen.class.getName(), "Could not send move");
+                }
+            }
+        });
+    }
+
+    public void calculateWinner(final String userChoice, final String opponentChoice, final TextView showResult){
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String result = rockPaperScissorsCalculations.playerChoices(userChoice, opponentChoice);
+                showResult.setText(result);
+            }
+        });
+    }
+
+    public void changeScore(final TextView score){
+        score.setText(Integer.parseInt(score.getText().toString()) + 1);
     }
 
 
