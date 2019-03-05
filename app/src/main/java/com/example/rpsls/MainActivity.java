@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
 
+//TODO: Test invite resolution host-side.
+
 public class MainActivity extends AppCompatActivity {
     final static String TAG = "MainActivity";
 
@@ -98,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    //TODO: Finish this method.
     private void processOutgoingInvite(final boolean inviteAccepted) {
         Log.d(TAG, "processOutgoingInvite: Resolving outgoing invite.");
         runOnUiThread(new Runnable() {
@@ -122,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         inviteResText = resolutionView.findViewById(R.id.inviteResText);
 
         if (inviteAccepted) {
+            Log.d(TAG, "initInviteResolutionDialog: Invite accepted.");
             inviteResText.setText(opponentIP + " has accepted your invite.");
             resolve.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -132,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else {
+            Log.d(TAG, "initInviteResolutionDialog: Invited declined.");
             inviteResText.setText(opponentIP + " has refused your invite.");
             resolve.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -140,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
         return inviteResolutionDialog;
     }
 
