@@ -21,7 +21,7 @@ public class rockPaperScissorsCalculations {
                 winOrLose = "It's a tie!";
             }
         }
-        
+
         else if(userChoice == "paper"){
             if (opponentChoice == "rock" || opponentChoice == "spock"){
                 winOrLose = "Paper beats" + " " + opponentChoice + "!";
@@ -68,6 +68,6 @@ public class rockPaperScissorsCalculations {
         }
         return winOrLose;
     }
-
+    
 
 }

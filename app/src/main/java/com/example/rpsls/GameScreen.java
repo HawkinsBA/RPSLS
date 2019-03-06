@@ -73,8 +73,7 @@ public class GameScreen extends AppCompatActivity {
                 game.sendMove("spock", clientIP.getText().toString(), Server.APP_PORT);
             }
         });
-        game.calculateWinner(userMove.getText().toString(),opponentMove.getText().toString(),result);
-        //game.changeScore()
+
 
         final AlertDialog.Builder rageQuit = new AlertDialog.Builder(GameScreen.this);
         rageQuit.setMessage("Are you sure you would like to quit?");
@@ -124,18 +123,17 @@ public class GameScreen extends AppCompatActivity {
                         public void notifyConnection(String target) {
                             try{
                                 Socket hostSocket = new Socket(target, Server.APP_PORT);
-                                String clientMove = Connection.receive(hostSocket);
+                                String clientMove = target;
                                 setOpponentMoveToTextView(clientMove, opponentMove);
 
-                            }
-                            catch (IOException e){
-                                Log.e(GameScreen.class.getName(), "Opponents move could not be received");
+
                             }
                         }
                         @Override
                         public void notifyInviteResolution(boolean accept) { }
                     });
                     Server.get().listen();
+
                 }
                 catch (IOException e){
                     Log.e(GameScreen.class.getName(), "Could not connect to server");
