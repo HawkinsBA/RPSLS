@@ -208,6 +208,7 @@ public class GameScreen extends AppCompatActivity {
                         public void notifyConnection(String target) {
                                 String clientMove = target;
                                 setOpponentMoveToTextView(clientMove, opponentMove);
+
                                 while (userMove.getText() == null){
                                     try{
                                         wait();
@@ -215,17 +216,16 @@ public class GameScreen extends AppCompatActivity {
                                         Thread.currentThread().interrupt();
                                         Log.i(GameScreen.this.toString(), "Could not process move");
                                     }
-                                } {
-                                    game.calculateWinner(userMove.getText().toString(),opponentMove.getText().toString(),result );
-                                    game.clearMoves(opponentMove, userMove);
-                                    if(decider == 1){
-                                        game.changeScore(userScore);
-                                    }
-                                    else{
-                                        game.changeScore(opponentScore);
-                                    }
                                 }
 
+                                game.calculateWinner(userMove.getText().toString(),opponentMove.getText().toString(),result );
+                                game.clearMoves(opponentMove, userMove);
+                                if(decider == 1){
+                                    game.changeScore(userScore);
+                                }
+                                else{
+                                    game.changeScore(opponentScore);
+                                }
                             }
                     });
                     Server.get().listen();
