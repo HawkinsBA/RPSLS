@@ -208,7 +208,7 @@ public class GameScreen extends AppCompatActivity {
                         public void notifyConnection(String target) {
                                 String clientMove = target;
                                 setOpponentMoveToTextView(clientMove, opponentMove);
-
+                                Log.d("GameScreen: ","notifyConnection: " + opponentMove);
                                 while (userMove.getText() == null){
                                     try{
                                         wait();
@@ -220,6 +220,8 @@ public class GameScreen extends AppCompatActivity {
 
                                 game.calculateWinner(userMove.getText().toString(),opponentMove.getText().toString(),result );
                                 game.clearMoves(opponentMove, userMove);
+                                Log.d("GameScreen: ","notifyConnection: " + opponentMove);
+                                Log.d("GameScreen: ","notifyConnection: " + userMove);
                                 if(decider == 1){
                                     game.changeScore(userScore);
                                 }
