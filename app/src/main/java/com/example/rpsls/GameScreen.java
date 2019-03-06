@@ -15,13 +15,14 @@ import java.net.Socket;
 
 public class GameScreen extends AppCompatActivity {
 
-    private TextView opponentMove;
-    private TextView userMove;
+    private String opponentMove;
+    private String userMove;
     private TextView result;
     private PlayGame game;
     public static int decider;
     private TextView opponentScore;
     private TextView userScore;
+    private String [] moveCheck = new String [2];
 
 
 
@@ -40,8 +41,6 @@ public class GameScreen extends AppCompatActivity {
         Button lizard = findViewById(R.id.lizard);
         Button spock = findViewById(R.id.spock);
         Button quit = findViewById(R.id.quitButton);
-        userMove = findViewById(R.id.userMove);
-        opponentMove = findViewById(R.id.opponentMove);
         game = new PlayGame(this);
 
 
@@ -52,7 +51,8 @@ public class GameScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 game.sendMove("rock", clientIP.getText().toString(), Server.APP_PORT);
-                userMove.setText("rock");
+                userMove = "rock";
+                moveCheck[0] = "rock";
             }
         });
 
@@ -60,7 +60,8 @@ public class GameScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 game.sendMove("paper", clientIP.getText().toString(), Server.APP_PORT);
-                userMove.setText("paper");
+                userMove = "paper";
+                moveCheck[0] = "paper";
             }
         });
 
@@ -68,7 +69,8 @@ public class GameScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 game.sendMove("scissors", clientIP.getText().toString(), Server.APP_PORT);
-                userMove.setText("scissors");
+                userMove = "scissors";
+                moveCheck[0] = "scissors";
             }
         });
 
@@ -76,7 +78,8 @@ public class GameScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 game.sendMove("lizard", clientIP.getText().toString(), Server.APP_PORT);
-                userMove.setText("lizard");
+                userMove = "lizard";
+                moveCheck[0] = "lizard";
             }
         });
 
@@ -84,7 +87,8 @@ public class GameScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 game.sendMove("spock", clientIP.getText().toString(), Server.APP_PORT);
-                userMove.setText("spock");
+                userMove = "spock";
+                moveCheck[0] = "spock";
             }
         });
 
@@ -211,21 +215,21 @@ public class GameScreen extends AppCompatActivity {
                     Server.get().addListener(new ServerListener() {
                         @Override
                         public void notifyConnection(String target) {
-                                String clientMove = target;
-                                Log.d("GameScreen", "notifyConnection: " + target);
-                                setOpponentMoveToTextView(clientMove, opponentMove);
-                                Log.d("GameScreen: ","notifyConnection: " + opponentMove);
-                                game.calculateWinner(userMove.getText().toString(),opponentMove.getText().toString(),result );
-                                game.clearMoves(opponentMove, userMove);
-                                Log.d("GameScreen: ","notifyConnection: " + opponentMove);
-                                Log.d("GameScreen: ","notifyConnection: " + userMove);
-                                if(decider == 1){
-                                    game.changeScore(userScore);
-                                }
-                                else{
-                                    game.changeScore(opponentScore);
-                                }
+                            moveCheck[1] = target;
+                            if(MoveSentCheck.checkIfMovesExist(moveCheck) == false){
+                                //some code to wait until MoveSentCheck.checkIfMoveExist is true
+                            }else if(MoveSentCheck.checkIfMovesExist(moveCheck) == true){
+                                game.calculateWinner(userMove,target,result);
                             }
+                            Log.d("GameScreen: ","notifyConnection: " + target);
+                            Log.d("GameScreen: ","notifyConnection: " + userMove);
+                            if(decider == 1){
+                                game.changeScore(userScore);
+                            }
+                            else if(decider == 2){
+                                game.changeScore(opponentScore);
+                            }
+                        }
                     });
                     Server.get().listen();
                 }
