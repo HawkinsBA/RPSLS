@@ -39,7 +39,6 @@ public class GameScreen extends AppCompatActivity {
         Intent i = getIntent();
         String opponentIP = i.getExtras().get("opponentIP").toString();
         clientIP.setText(opponentIP);
-
         rock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +73,8 @@ public class GameScreen extends AppCompatActivity {
                 game.sendMove("spock", clientIP.getText().toString(), Server.APP_PORT);
             }
         });
+        game.calculateWinner(userMove.getText().toString(),opponentMove.getText().toString(),result);
+        //game.changeScore()
 
         final AlertDialog.Builder rageQuit = new AlertDialog.Builder(GameScreen.this);
         rageQuit.setMessage("Are you sure you would like to quit?");
@@ -91,6 +92,8 @@ public class GameScreen extends AppCompatActivity {
             }
         });
         final AlertDialog quitPressed = rageQuit.create();
+ ;
+
 
 
         quit.setOnClickListener(new View.OnClickListener() {
@@ -109,6 +112,7 @@ public class GameScreen extends AppCompatActivity {
             }
         });
     }
+
 
     private void setUpServer(){
         new Thread(new Runnable() {
@@ -140,5 +144,8 @@ public class GameScreen extends AppCompatActivity {
         }).start();
 
     }
+
+
+
 
 }
