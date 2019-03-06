@@ -12,7 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity_win_screen"></activity>
         <activity android:name=".GameScreen" />
         <activity android:name=".MainActivity">
             <intent-filter>
