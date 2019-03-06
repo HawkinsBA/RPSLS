@@ -23,7 +23,7 @@ public class PlayGame extends GameScreen{
     }
 
     public static void sendMove(final String move, final String host, final int port){
-        activity.runOnUiThread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 try{

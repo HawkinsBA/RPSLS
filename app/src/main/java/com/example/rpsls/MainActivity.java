@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             Log.d(TAG, "initComponents: Setting myIPView to my IP.");
             userIP = Utilities.getLocalIpAddress();
-            myIPView.setText("Your IP: " + userIP);
+            myIPView.setText(userIP);
         } catch (SocketException e) {
             Log.e(TAG, "initComponents: Threw exception when finding IP address.");
             myIPView.setText("Could not determine your IP address.");
@@ -229,10 +229,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    Log.d(TAG, "resolveInvite: Resolving invite.");
                     Socket socket = new Socket(incomingIP, Server.APP_PORT);
                     Invite.resolve(socket, accept);
                     socket.close();
                 } catch (final Exception e) {
+                    Log.d(TAG, "resolveInvite: Caught error when resolving invite.");
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

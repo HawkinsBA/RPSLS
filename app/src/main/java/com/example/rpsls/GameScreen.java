@@ -1,7 +1,6 @@
 package com.example.rpsls;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -37,40 +34,42 @@ public class GameScreen extends AppCompatActivity {
         Button quit = findViewById(R.id.quitButton);
         final TextView userMove = findViewById(R.id.userMove);
         opponentMove = findViewById(R.id.opponentMove);
+        final PlayGame game = new PlayGame(this);
+
 
 
         rock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayGame.sendMove("rock", clientIP.getText().toString(), Server.APP_PORT);
+                game.sendMove("rock", clientIP.getText().toString(), Server.APP_PORT);
             }
         });
 
         paper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayGame.sendMove("paper", clientIP.getText().toString(), Server.APP_PORT);
+                game.sendMove("paper", clientIP.getText().toString(), Server.APP_PORT);
             }
         });
 
         scissors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayGame.sendMove("scissors", clientIP.getText().toString(), Server.APP_PORT);
+                game.sendMove("scissors", clientIP.getText().toString(), Server.APP_PORT);
             }
         });
 
         lizard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayGame.sendMove("lizard", clientIP.getText().toString(), Server.APP_PORT);
+                game.sendMove("lizard", clientIP.getText().toString(), Server.APP_PORT);
             }
         });
 
         spock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayGame.sendMove("spock", clientIP.getText().toString(), Server.APP_PORT);
+                game.sendMove("spock", clientIP.getText().toString(), Server.APP_PORT);
             }
         });
 
@@ -128,9 +127,7 @@ public class GameScreen extends AppCompatActivity {
                             }
                         }
                         @Override
-                        public void notifyInviteResolution(boolean accept) {
-
-                        }
+                        public void notifyInviteResolution(boolean accept) { }
                     });
                     Server.get().listen();
                 }

@@ -1,7 +1,5 @@
 package com.example.rpsls;
 
-import android.widget.Button;
-
 public class rockPaperScissorsCalculations {
 
     /*
