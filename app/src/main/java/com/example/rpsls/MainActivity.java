@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView myIPView, inviteText;
     private Button connect, howToPlay, gotIt, accept, decline;
     private String userIP;
+    private boolean isResponding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         targetIP = findViewById(R.id.host);
         connect = findViewById(R.id.start);
         howToPlay = findViewById(R.id.howToPlay);
+        isResponding = false;
 
         try {
             Log.d(TAG, "initComponents: Setting myIPView to my IP.");
@@ -130,11 +132,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Incoming invite accepted.");
-                sendInvite(incomingIP);
-                Intent toGameIntent = new Intent(MainActivity.this, GameScreen.class);
-                toGameIntent.putExtra("opponentIP", incomingIP);
-                startActivity(toGameIntent);
-                MainActivity.this.finish();
+                if (!isResponding) {
+                    sendInvite(incomingIP);
+                    Intent toGameIntent = new Intent(MainActivity.this, GameScreen.class);
+                    toGameIntent.putExtra("opponentIP", incomingIP);
+                    startActivity(toGameIntent);
+                } else {
+                    Intent toGameIntent = new Intent(MainActivity.this, GameScreen.class);
+                    toGameIntent.putExtra("opponentIP", incomingIP);
+                    startActivity(toGameIntent);
+                }
             }
         });
 
@@ -158,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
                     Socket hostSocket = new Socket(targetIP, Server.APP_PORT);
                     Connection.broadcast(hostSocket, myIPView.getText().toString());
                     hostSocket.close();
+                    isResponding = true;
                 } catch (final Exception e) {
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
