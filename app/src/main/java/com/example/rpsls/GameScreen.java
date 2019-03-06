@@ -19,6 +19,11 @@ public class GameScreen extends AppCompatActivity {
     private TextView userMove;
     private TextView result;
     private PlayGame game;
+    public static int decider;
+    private TextView opponentScore;
+    private TextView userScore;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,7 @@ public class GameScreen extends AppCompatActivity {
         userMove = findViewById(R.id.userMove);
         opponentMove = findViewById(R.id.opponentMove);
         game = new PlayGame(this);
+
 
         Intent i = getIntent();
         String opponentIP = i.getExtras().get("opponentIP").toString();
@@ -76,8 +82,7 @@ public class GameScreen extends AppCompatActivity {
                 game.sendMove("spock", clientIP.getText().toString(), Server.APP_PORT, userMove);
             }
         });
-        game.calculateWinner(userMove.getText().toString(),opponentMove.getText().toString(),result);
-        //game.changeScore()
+
 
         final AlertDialog.Builder rageQuit = new AlertDialog.Builder(GameScreen.this);
         rageQuit.setMessage("Are you sure you would like to quit?");
@@ -115,6 +120,82 @@ public class GameScreen extends AppCompatActivity {
             }
         });
     }
+    public static String playerChoices (String userChoice, String opponentChoice, TextView user){
+        String winOrLose = "Play!";//0 = tie, 1 = user wins/opponent loses, 2 = user loses/opponent wins
+
+        if(userChoice == "rock"){
+            if (opponentChoice == "scissors" || opponentChoice == "lizard"){
+                winOrLose = "Rock beats" + " " + opponentChoice + "!";
+                decider = 1;
+            }
+            else if (opponentChoice == "spock" || opponentChoice == "paper"){
+                winOrLose = "Rock lost to" + " " + opponentChoice + "!";
+                decider = 2;
+            }
+            else if (opponentChoice == "rock"){
+                winOrLose = "It's a tie!";
+                decider = 0;
+            }
+        }
+
+        else if(userChoice == "paper"){
+            if (opponentChoice == "rock" || opponentChoice == "spock"){
+                winOrLose = "Paper beats" + " " + opponentChoice + "!";
+                decider = 1;
+            }
+            else if (opponentChoice == "scissors" || opponentChoice == "lizard"){
+                winOrLose = "Paper lost to" + " " + opponentChoice + "!";
+                decider = 2;
+            }
+            else if (opponentChoice == "paper"){
+                winOrLose = "It's a tie!";
+                decider = 0;
+            }
+        }
+        else if(userChoice == "scissors"){
+            if (opponentChoice == "paper" || opponentChoice == "lizard"){
+                winOrLose = "Scissors beats" + " " + opponentChoice + "!";
+                decider = 1;
+            }
+            else if (opponentChoice == "spock" || opponentChoice == "rock"){
+                winOrLose = "Scissors lost to" + " " + opponentChoice + "!";
+                decider = 2;
+            }
+            else if (opponentChoice == "scissors"){
+                winOrLose = "It's a tie!";
+                decider = 0;
+            }
+        }
+        else if(userChoice == "lizard"){
+            if (opponentChoice == "paper" || opponentChoice == "spock"){
+                winOrLose = "Lizard beats" + " " + opponentChoice + "!";
+                decider = 1;
+            }
+            else if (opponentChoice == "scissors" || opponentChoice == "rock"){
+                winOrLose = "Lizard lost to" + " " + opponentChoice + "!";
+                decider = 2;
+            }
+            else if (opponentChoice == "lizard"){
+                winOrLose = "It's a tie!";
+                decider = 0;
+            }
+        }
+        else if(userChoice == "spock"){
+            if (opponentChoice == "rock" || opponentChoice == "scissors"){
+                winOrLose = "Spock beats" + " " + opponentChoice + "!";
+                decider = 1;
+            }
+            else if (opponentChoice == "paper" || opponentChoice == "lizard"){
+                winOrLose = "Spock lost to" + " " + opponentChoice + "!";
+                decider = 2;
+            }
+            else if (opponentChoice == "spock"){
+                winOrLose = "It's a tie!";
+                decider = 0;
+            }
+        }
+        return winOrLose;
+    }
 
 
     private void setUpServer(){
@@ -135,9 +216,14 @@ public class GameScreen extends AppCompatActivity {
                                         Log.i(GameScreen.this.toString(), "Could not process move");
                                     }
                                 } {
-                                    game.calculateWinner(userMove.getText().toString(),opponentMove.getText().toString(),result, );
-                                    game.changeScore();
+                                    game.calculateWinner(userMove.getText().toString(),opponentMove.getText().toString(),result );
                                     game.clearMoves(opponentMove, userMove);
+                                    if(decider == 1){
+                                        game.changeScore(userScore);
+                                    }
+                                    else{
+                                        game.changeScore(opponentScore);
+                                    }
                                 }
 
                             }

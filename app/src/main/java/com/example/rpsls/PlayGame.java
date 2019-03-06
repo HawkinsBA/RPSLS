@@ -40,11 +40,11 @@ public class PlayGame extends GameScreen{
         });
     }
 
-    public static void calculateWinner(final String userChoice, final String opponentChoice, final TextView showResult, final TextView winner){
+    public static void calculateWinner(final String userChoice, final String opponentChoice, final TextView showResult){
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String result = rockPaperScissorsCalculations.playerChoices(userChoice, opponentChoice, winner);
+                String result = playerChoices(userChoice, opponentChoice, showResult);
                 showResult.setText(result);
             }
         });
