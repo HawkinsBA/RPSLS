@@ -36,7 +36,8 @@ public class GameScreen extends AppCompatActivity {
         opponentMove = findViewById(R.id.opponentMove);
         final PlayGame game = new PlayGame(this);
 
-
+        Intent i = getIntent();
+        clientIP.setText(i.getParcelableExtra("opponentIP").toString());
 
         rock.setOnClickListener(new View.OnClickListener() {
             @Override
