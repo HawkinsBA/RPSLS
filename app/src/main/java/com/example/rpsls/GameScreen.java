@@ -51,35 +51,40 @@ public class GameScreen extends AppCompatActivity {
         rock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("rock", clientIP.getText().toString(), Server.APP_PORT, userMove);
+                game.sendMove("rock", clientIP.getText().toString(), Server.APP_PORT);
+                userMove.setText("rock");
             }
         });
 
         paper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("paper", clientIP.getText().toString(), Server.APP_PORT, userMove);
+                game.sendMove("paper", clientIP.getText().toString(), Server.APP_PORT);
+                userMove.setText("paper");
             }
         });
 
         scissors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("scissors", clientIP.getText().toString(), Server.APP_PORT, userMove);
+                game.sendMove("scissors", clientIP.getText().toString(), Server.APP_PORT);
+                userMove.setText("scissors");
             }
         });
 
         lizard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("lizard", clientIP.getText().toString(), Server.APP_PORT, userMove);
+                game.sendMove("lizard", clientIP.getText().toString(), Server.APP_PORT);
+                userMove.setText("lizard");
             }
         });
 
         spock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("spock", clientIP.getText().toString(), Server.APP_PORT, userMove);
+                game.sendMove("spock", clientIP.getText().toString(), Server.APP_PORT);
+                userMove.setText("spock");
             }
         });
 

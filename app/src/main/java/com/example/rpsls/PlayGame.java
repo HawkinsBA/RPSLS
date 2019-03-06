@@ -1,6 +1,9 @@
 package com.example.rpsls;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -22,7 +25,7 @@ public class PlayGame extends GameScreen{
         this.activity = activity;
     }
 
-    public static void sendMove(final String move, final String host, final int port, final TextView moveSent){
+    public static void sendMove(final String move, final String host, final int port){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -30,7 +33,6 @@ public class PlayGame extends GameScreen{
                     Socket target = new Socket(host, port);
                     Connection.broadcast(target, move);
                     target.close();
-                    moveSent.setText(move);
                 }
                 catch(final Exception e){
                     // Utilities.notifyException(GameScreen.class.getName(), );
