@@ -22,7 +22,7 @@ public class PlayGame extends GameScreen{
         this.activity = activity;
     }
 
-    public static void sendMove(final String move, final String host, final int port){
+    public static void sendMove(final String move, final String host, final int port, final TextView moveSent){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -30,6 +30,7 @@ public class PlayGame extends GameScreen{
                     Socket target = new Socket(host, port);
                     Connection.broadcast(target, move);
                     target.close();
+                    moveSent.setText(move);
                 }
                 catch(final Exception e){
                     // Utilities.notifyException(GameScreen.class.getName(), );
@@ -39,11 +40,11 @@ public class PlayGame extends GameScreen{
         });
     }
 
-    public void calculateWinner(final String userChoice, final String opponentChoice, final TextView showResult){
+    public static void calculateWinner(final String userChoice, final String opponentChoice, final TextView showResult, final TextView winner){
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String result = rockPaperScissorsCalculations.playerChoices(userChoice, opponentChoice);
+                String result = rockPaperScissorsCalculations.playerChoices(userChoice, opponentChoice, winner);
                 showResult.setText(result);
             }
         });
@@ -51,6 +52,11 @@ public class PlayGame extends GameScreen{
 
     public void changeScore(final TextView score){
         score.setText(Integer.parseInt(score.getText().toString()) + 1);
+    }
+
+    public void clearMoves(final TextView userMove, final TextView opponentMove){
+        userMove.setText(null);
+        opponentMove.setText(null);
     }
 
 

@@ -16,6 +16,9 @@ import java.net.Socket;
 public class GameScreen extends AppCompatActivity {
 
     private TextView opponentMove;
+    private TextView userMove;
+    private TextView result;
+    private PlayGame game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,16 +28,16 @@ public class GameScreen extends AppCompatActivity {
         setUpServer();
 
         final TextView clientIP = findViewById(R.id.opponentIP);
-        TextView result = findViewById(R.id.roundResult);
+        result = findViewById(R.id.roundResult);
         Button rock = findViewById(R.id.rock);
         Button paper = findViewById(R.id.paper);
         Button scissors = findViewById(R.id.scissors);
         Button lizard = findViewById(R.id.lizard);
         Button spock = findViewById(R.id.spock);
         Button quit = findViewById(R.id.quitButton);
-        final TextView userMove = findViewById(R.id.userMove);
+        userMove = findViewById(R.id.userMove);
         opponentMove = findViewById(R.id.opponentMove);
-        final PlayGame game = new PlayGame(this);
+        game = new PlayGame(this);
 
         Intent i = getIntent();
         String opponentIP = i.getExtras().get("opponentIP").toString();
@@ -42,35 +45,35 @@ public class GameScreen extends AppCompatActivity {
         rock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("rock", clientIP.getText().toString(), Server.APP_PORT);
+                game.sendMove("rock", clientIP.getText().toString(), Server.APP_PORT, userMove);
             }
         });
 
         paper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("paper", clientIP.getText().toString(), Server.APP_PORT);
+                game.sendMove("paper", clientIP.getText().toString(), Server.APP_PORT, userMove);
             }
         });
 
         scissors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("scissors", clientIP.getText().toString(), Server.APP_PORT);
+                game.sendMove("scissors", clientIP.getText().toString(), Server.APP_PORT, userMove);
             }
         });
 
         lizard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("lizard", clientIP.getText().toString(), Server.APP_PORT);
+                game.sendMove("lizard", clientIP.getText().toString(), Server.APP_PORT, userMove);
             }
         });
 
         spock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("spock", clientIP.getText().toString(), Server.APP_PORT);
+                game.sendMove("spock", clientIP.getText().toString(), Server.APP_PORT, userMove);
             }
         });
         game.calculateWinner(userMove.getText().toString(),opponentMove.getText().toString(),result);
@@ -122,16 +125,22 @@ public class GameScreen extends AppCompatActivity {
                     Server.get().addListener(new ServerListener() {
                         @Override
                         public void notifyConnection(String target) {
-                            try{
-                                Socket hostSocket = new Socket(target, Server.APP_PORT);
-                                String clientMove = Connection.receive(hostSocket);
+                                String clientMove = target;
                                 setOpponentMoveToTextView(clientMove, opponentMove);
+                                while (userMove.getText() == null){
+                                    try{
+                                        wait();
+                                    }catch (InterruptedException i){
+                                        Thread.currentThread().interrupt();
+                                        Log.i(GameScreen.this.toString(), "Could not process move");
+                                    }
+                                } {
+                                    game.calculateWinner(userMove.getText().toString(),opponentMove.getText().toString(),result, );
+                                    game.changeScore();
+                                    game.clearMoves(opponentMove, userMove);
+                                }
 
                             }
-                            catch (IOException e){
-                                Log.e(GameScreen.class.getName(), "Opponents move could not be received");
-                            }
-                        }
                         @Override
                         public void notifyInviteResolution(boolean accept) { }
                     });
