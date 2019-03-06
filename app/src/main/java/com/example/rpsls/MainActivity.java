@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent toGameIntent = new Intent(MainActivity.this, GameScreen.class);
                     toGameIntent.putExtra("opponentIP", opponentIP);
                     startActivity(toGameIntent);
-                    finish();
+                    MainActivity.this.finish();
                 }
             });
         } else {
