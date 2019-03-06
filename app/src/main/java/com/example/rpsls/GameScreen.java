@@ -212,18 +212,9 @@ public class GameScreen extends AppCompatActivity {
                         @Override
                         public void notifyConnection(String target) {
                                 String clientMove = target;
-                            Log.d("GameScreen", "notifyConnection: " + target);
+                                Log.d("GameScreen", "notifyConnection: " + target);
                                 setOpponentMoveToTextView(clientMove, opponentMove);
                                 Log.d("GameScreen: ","notifyConnection: " + opponentMove);
-                                while (userMove.getText() == null){
-                                    try{
-                                        wait();
-                                    }catch (InterruptedException i){
-                                        Thread.currentThread().interrupt();
-                                        Log.i(GameScreen.this.toString(), "Could not process move");
-                                    }
-                                }
-
                                 game.calculateWinner(userMove.getText().toString(),opponentMove.getText().toString(),result );
                                 game.clearMoves(opponentMove, userMove);
                                 Log.d("GameScreen: ","notifyConnection: " + opponentMove);
