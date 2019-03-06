@@ -227,8 +227,6 @@ public class GameScreen extends AppCompatActivity {
                                 }
 
                             }
-                        @Override
-                        public void notifyInviteResolution(boolean accept) { }
                     });
                     Server.get().listen();
                 }
