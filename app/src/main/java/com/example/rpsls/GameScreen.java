@@ -216,9 +216,9 @@ public class GameScreen extends AppCompatActivity {
                         @Override
                         public void notifyConnection(String target) {
                             moveCheck[1] = target;
-                            if(MoveSentCheck.checkIfMovesExist(moveCheck) == false){
+                            if(!MoveSentCheck.checkIfMovesExist(moveCheck)){
                                 //some code to wait until MoveSentCheck.checkIfMoveExist is true
-                            }else if(MoveSentCheck.checkIfMovesExist(moveCheck) == true){
+                            }else if(MoveSentCheck.checkIfMovesExist(moveCheck)){
                                 game.calculateWinner(userMove,target,result);
                             }
                             Log.d("GameScreen: ","notifyConnection: " + target);
