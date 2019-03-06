@@ -207,6 +207,7 @@ public class GameScreen extends AppCompatActivity {
                         @Override
                         public void notifyConnection(String target) {
                                 String clientMove = target;
+                            Log.d("GameScreen", "notifyConnection: " + target);
                                 setOpponentMoveToTextView(clientMove, opponentMove);
                                 Log.d("GameScreen: ","notifyConnection: " + opponentMove);
                                 while (userMove.getText() == null){
