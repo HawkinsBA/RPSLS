@@ -33,8 +33,8 @@ public class Server {
 
     public void listen() throws IOException {
         for (;;) {
-            listenForConnections().run();
             listenForInviteResolutions().run();
+            listenForConnections().run();
         }
     }
 
