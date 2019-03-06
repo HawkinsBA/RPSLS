@@ -195,19 +195,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void sendResponse(String targetIP, String response) {
-        try {
-            Socket hostSocket = new Socket(targetIP, Server.APP_PORT);
-            Connection.broadcast(hostSocket, response);
-            hostSocket.close();
-        } catch (final Exception e) {
-            MainActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Utilities.notifyException(MainActivity.this, e);
+    private void sendResponse(final String targetIP, final String response) {
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Socket hostSocket = new Socket(targetIP, Server.APP_PORT);
+                    Connection.broadcast(hostSocket, response);
+                    hostSocket.close();
+                } catch (final Exception e) {
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Utilities.notifyException(MainActivity.this, e);
+                        }
+                    });
                 }
-            });
-        }
+            }
+        }.start();
     }
 
     private void sendInvite(final String targetIP) {
