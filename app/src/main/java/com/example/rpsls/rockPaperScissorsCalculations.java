@@ -45,6 +45,7 @@ public class rockPaperScissorsCalculations {
                 winOrLose = "It's a tie!";
             }
         }
+        //public void LizardMove()
         else if(userChoice == "lizard"){
             if (opponentChoice == "paper" || opponentChoice == "spock"){
                 winOrLose = "Lizard beats" + " " + opponentChoice + "!";

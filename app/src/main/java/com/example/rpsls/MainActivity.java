@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             Log.d(TAG, "initComponents: Setting myIPView to my IP.");
             userIP = Utilities.getLocalIpAddress();
-            myIPView.setText("Your IP: " + userIP);
+            myIPView.setText(userIP);
         } catch (SocketException e) {
             Log.e(TAG, "initComponents: Threw exception when finding IP address.");
             myIPView.setText("Could not determine your IP address.");

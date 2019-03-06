@@ -35,8 +35,6 @@ public class GameScreen extends AppCompatActivity {
         Button lizard = findViewById(R.id.lizard);
         Button spock = findViewById(R.id.spock);
         Button quit = findViewById(R.id.quitButton);
-        final TextView userMove = findViewById(R.id.userMove);
-        opponentMove = findViewById(R.id.opponentMove);
 
 
         rock.setOnClickListener(new View.OnClickListener() {

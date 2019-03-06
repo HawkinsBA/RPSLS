@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class PlayGame extends GameScreen{
+    private int rounds;
 
     /**
      * Adapted from the class created by gabriel on 2/18/19.
@@ -47,12 +48,28 @@ public class PlayGame extends GameScreen{
                 showResult.setText(result);
             }
         });
+        rounds += 1;
     }
 
     public void changeScore(final TextView score){
         score.setText(Integer.parseInt(score.getText().toString()) + 1);
     }
 
+    public void changeRound(final TextView round) {
+        round.setText(Integer.parseInt(round.getText().toString()) + 1);
+    }
 
 
-}
+        }
+
+
+
+
+
+
+
+
+
+
+
+
