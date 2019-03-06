@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void notifyInviteResolution(boolean inviteAccepted) {
-                            processOutgoingInvite(inviteAccepted);
+//                            processOutgoingInvite(inviteAccepted);
                         }
                     });
                     Server.get().listen();
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Incoming invite accepted.");
-                resolveInvite(incomingIP, true);
+                sendInvite(incomingIP);
                 Intent toGameIntent = new Intent(MainActivity.this, GameScreen.class);
                 toGameIntent.putExtra("opponentIP", incomingIP);
                 startActivity(toGameIntent);
