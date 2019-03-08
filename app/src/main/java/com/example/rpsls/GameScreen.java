@@ -250,7 +250,7 @@ public class GameScreen extends AppCompatActivity {
 
     }
 
-    public static void sendMove(final String move, final String host) {
+    public void sendMove(final String move, final String host) {
         new Thread(new Runnable() {
             @Override
             public void run() {
