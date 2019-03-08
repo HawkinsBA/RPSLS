@@ -206,6 +206,13 @@ public class GameScreen extends AppCompatActivity {
         return winOrLose;
     }
 
+    private boolean haveBothMoves() {
+        return (moveCheck[0] != null && moveCheck[1] != null);
+    }
+
+    private void calculateWinner() {
+        
+    }
 
     private void setUpServer(){
         new Thread(new Runnable() {
@@ -214,18 +221,17 @@ public class GameScreen extends AppCompatActivity {
                 try{
                     Server.get().addListener(new ServerListener() {
                         @Override
-                        public void notifyConnection(String target) {
-                            moveCheck[1] = target;
-                            if(!MoveSentCheck.checkIfMovesExist(moveCheck)){
-                                //some code to wait until MoveSentCheck.checkIfMoveExist is true
-                            }else if(MoveSentCheck.checkIfMovesExist(moveCheck)){
-                                game.calculateWinner(userMove,target,result);
+                        public void notifyConnection(String move) {
+                            moveCheck[1] = move;
+
+                            if (haveBothMoves()) {
+                                game.calculateWinner(userMove, move, result);
                             }
-                            Log.d("GameScreen: ","notifyConnection: " + target);
-                            Log.d("GameScreen: ","notifyConnection: " + userMove);
+
                             if(decider == 1){
                                 game.changeScore(userScore);
                             }
+
                             else if(decider == 2){
                                 game.changeScore(opponentScore);
                             }
