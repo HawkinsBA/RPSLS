@@ -10,8 +10,9 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.net.Socket;
 
-public class PlayGame extends GameScreen{
 
+public class PlayGame extends GameScreen{
+    public static boolean sent;
     /**
      * Adapted from the class created by gabriel on 2/18/19.
      */
