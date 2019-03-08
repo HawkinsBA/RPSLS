@@ -30,6 +30,7 @@ public class PlayGame extends GameScreen {
             @Override
             public void run() {
                 try {
+                    Log.d(TAG, "sendMove: Opening socket.");
                     Socket target = new Socket(host, Server.APP_PORT);
                     Connection.broadcast(target, move);
                     target.close();
