@@ -24,8 +24,6 @@ public class GameScreen extends AppCompatActivity {
     private TextView userScore;
     private String [] moveCheck = new String [2];
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,51 +45,51 @@ public class GameScreen extends AppCompatActivity {
         Intent i = getIntent();
         String opponentIP = i.getExtras().get("opponentIP").toString();
         clientIP.setText(opponentIP);
+
         rock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("rock", clientIP.getText().toString(), Server.APP_PORT);
-                userMove = "rock";
+                game.sendMove("rock", clientIP.getText().toString());
                 moveCheck[0] = "rock";
+                updateGame();
             }
         });
 
         paper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("paper", clientIP.getText().toString(), Server.APP_PORT);
-                userMove = "paper";
+                game.sendMove("paper", clientIP.getText().toString());
                 moveCheck[0] = "paper";
+                updateGame();
             }
         });
 
         scissors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("scissors", clientIP.getText().toString(), Server.APP_PORT);
-                userMove = "scissors";
+                game.sendMove("scissors", clientIP.getText().toString());
                 moveCheck[0] = "scissors";
+                updateGame();
             }
         });
 
         lizard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("lizard", clientIP.getText().toString(), Server.APP_PORT);
-                userMove = "lizard";
+                game.sendMove("lizard", clientIP.getText().toString());
                 moveCheck[0] = "lizard";
+                updateGame();
             }
         });
 
         spock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("spock", clientIP.getText().toString(), Server.APP_PORT);
-                userMove = "spock";
+                game.sendMove("spock", clientIP.getText().toString());
                 moveCheck[0] = "spock";
+                updateGame();
             }
         });
-
 
         final AlertDialog.Builder rageQuit = new AlertDialog.Builder(GameScreen.this);
         rageQuit.setMessage("Are you sure you would like to quit?");
@@ -102,6 +100,7 @@ public class GameScreen extends AppCompatActivity {
                 startActivity(backToMainScreen);
             }
         });
+
         rageQuit.setPositiveButton("Resume", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -109,9 +108,6 @@ public class GameScreen extends AppCompatActivity {
             }
         });
         final AlertDialog quitPressed = rageQuit.create();
- ;
-
-
 
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,24 +117,16 @@ public class GameScreen extends AppCompatActivity {
         });
     }
 
-    public void setOpponentMoveToTextView(final String move, final TextView userMove){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                userMove.setText(move);
-            }
-        });
-    }
-    public static String playerChoices (String userChoice, String opponentChoice, TextView user){
+    public static String playerChoices(String userChoice, String opponentChoice) {
         String winOrLose = "Play!";//0 = tie, 1 = user wins/opponent loses, 2 = user loses/opponent wins
 
         if(userChoice == "rock"){
             if (opponentChoice == "scissors" || opponentChoice == "lizard"){
-                winOrLose = "Rock beats" + " " + opponentChoice + "!";
+                winOrLose = "Rock beats " + " " + opponentChoice + "!";
                 decider = 1;
             }
             else if (opponentChoice == "spock" || opponentChoice == "paper"){
-                winOrLose = "Rock lost to" + " " + opponentChoice + "!";
+                winOrLose = "Rock lost to " + " " + opponentChoice + "!";
                 decider = 2;
             }
             else if (opponentChoice == "rock"){
@@ -149,11 +137,11 @@ public class GameScreen extends AppCompatActivity {
 
         else if(userChoice == "paper"){
             if (opponentChoice == "rock" || opponentChoice == "spock"){
-                winOrLose = "Paper beats" + " " + opponentChoice + "!";
+                winOrLose = "Paper beats " + " " + opponentChoice + "!";
                 decider = 1;
             }
             else if (opponentChoice == "scissors" || opponentChoice == "lizard"){
-                winOrLose = "Paper lost to" + " " + opponentChoice + "!";
+                winOrLose = "Paper lost to " + " " + opponentChoice + "!";
                 decider = 2;
             }
             else if (opponentChoice == "paper"){
@@ -163,11 +151,11 @@ public class GameScreen extends AppCompatActivity {
         }
         else if(userChoice == "scissors"){
             if (opponentChoice == "paper" || opponentChoice == "lizard"){
-                winOrLose = "Scissors beats" + " " + opponentChoice + "!";
+                winOrLose = "Scissors beats " + " " + opponentChoice + "!";
                 decider = 1;
             }
             else if (opponentChoice == "spock" || opponentChoice == "rock"){
-                winOrLose = "Scissors lost to" + " " + opponentChoice + "!";
+                winOrLose = "Scissors lost to " + " " + opponentChoice + "!";
                 decider = 2;
             }
             else if (opponentChoice == "scissors"){
@@ -177,11 +165,11 @@ public class GameScreen extends AppCompatActivity {
         }
         else if(userChoice == "lizard"){
             if (opponentChoice == "paper" || opponentChoice == "spock"){
-                winOrLose = "Lizard beats" + " " + opponentChoice + "!";
+                winOrLose = "Lizard beats " + " " + opponentChoice + "!";
                 decider = 1;
             }
             else if (opponentChoice == "scissors" || opponentChoice == "rock"){
-                winOrLose = "Lizard lost to" + " " + opponentChoice + "!";
+                winOrLose = "Lizard lost to " + " " + opponentChoice + "!";
                 decider = 2;
             }
             else if (opponentChoice == "lizard"){
@@ -191,11 +179,11 @@ public class GameScreen extends AppCompatActivity {
         }
         else if(userChoice == "spock"){
             if (opponentChoice == "rock" || opponentChoice == "scissors"){
-                winOrLose = "Spock beats" + " " + opponentChoice + "!";
+                winOrLose = "Spock beats " + " " + opponentChoice + "!";
                 decider = 1;
             }
             else if (opponentChoice == "paper" || opponentChoice == "lizard"){
-                winOrLose = "Spock lost to" + " " + opponentChoice + "!";
+                winOrLose = "Spock lost to " + " " + opponentChoice + "!";
                 decider = 2;
             }
             else if (opponentChoice == "spock"){
@@ -203,6 +191,7 @@ public class GameScreen extends AppCompatActivity {
                 decider = 0;
             }
         }
+
         return winOrLose;
     }
 
@@ -210,8 +199,23 @@ public class GameScreen extends AppCompatActivity {
         return (moveCheck[0] != null && moveCheck[1] != null);
     }
 
-    private void calculateWinner() {
-        
+    private void updateScore() {
+        if(decider == 1){
+            game.changeScore(userScore);
+        }
+
+        else if(decider == 2){
+            game.changeScore(opponentScore);
+        }
+    }
+
+    private void updateGame() {
+        if (haveBothMoves()) {
+            userMove = moveCheck[0];
+            opponentMove = moveCheck[1];
+            game.calculateWinner(userMove, opponentMove, result);
+            updateScore();
+        }
     }
 
     private void setUpServer(){
@@ -223,18 +227,7 @@ public class GameScreen extends AppCompatActivity {
                         @Override
                         public void notifyConnection(String move) {
                             moveCheck[1] = move;
-
-                            if (haveBothMoves()) {
-                                game.calculateWinner(userMove, move, result);
-                            }
-
-                            if(decider == 1){
-                                game.changeScore(userScore);
-                            }
-
-                            else if(decider == 2){
-                                game.changeScore(opponentScore);
-                            }
+                            updateGame();
                         }
                     });
                     Server.get().listen();
