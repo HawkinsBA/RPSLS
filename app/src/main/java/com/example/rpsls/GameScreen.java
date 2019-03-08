@@ -26,8 +26,6 @@ public class GameScreen extends AppCompatActivity {
     private boolean userSent = false;
     private boolean opponentSent = false;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,107 +47,52 @@ public class GameScreen extends AppCompatActivity {
         Intent i = getIntent();
         String opponentIP = i.getExtras().get("opponentIP").toString();
         clientIP.setText(opponentIP);
+
         rock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("rock", clientIP.getText().toString(), Server.APP_PORT);
-                userMove = "rock";
-                userSent = true;
-x                if(!opponentSent){
+                game.sendMove("rock", clientIP.getText().toString());
+                moveCheck[0] = "rock";
+                updateGame();
 
-                }else if(opponentSent){
-                    game.calculateWinner(userMove, opponentMove,result);
-                    if(decider == 1){
-                        game.changeScore(userScore);
-                    }
-                    else if(decider == 2){
-                        game.changeScore(opponentScore);
-                    }
-                }
             }
         });
 
         paper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("paper", clientIP.getText().toString(), Server.APP_PORT);
-                userMove = "paper";
+                game.sendMove("paper", clientIP.getText().toString());
                 moveCheck[0] = "paper";
-                boolean bothMoves = MoveSentCheck.checkIfMovesExist(moveCheck);
-                if(!bothMoves){
-
-                }else if(bothMoves){
-                    game.calculateWinner(userMove, moveCheck[1],result);
-                    if(decider == 1){
-                        game.changeScore(userScore);
-                    }
-                    else if(decider == 2){
-                        game.changeScore(opponentScore);
-                    }
-                }
+                updateGame();
             }
         });
 
         scissors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("scissors", clientIP.getText().toString(), Server.APP_PORT);
-                userMove = "scissors";
+                game.sendMove("scissors", clientIP.getText().toString());
                 moveCheck[0] = "scissors";
-                boolean bothMoves = MoveSentCheck.checkIfMovesExist(moveCheck);
-                if(!bothMoves){
-
-                }else if(bothMoves){
-                    game.calculateWinner(userMove, moveCheck[1],result);
-                    if(decider == 1){
-                        game.changeScore(userScore);
-                    }
-                    else if(decider == 2){
-                        game.changeScore(opponentScore);
-                    }
-                }            }
+                updateGame();
+            }
         });
 
         lizard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("lizard", clientIP.getText().toString(), Server.APP_PORT);
-                userMove = "lizard";
+                game.sendMove("lizard", clientIP.getText().toString());
                 moveCheck[0] = "lizard";
-                boolean bothMoves = MoveSentCheck.checkIfMovesExist(moveCheck);
-                if(!bothMoves){
-
-                }else if(bothMoves){
-                    game.calculateWinner(userMove, moveCheck[1],result);
-                    if(decider == 1){
-                        game.changeScore(userScore);
-                    }
-                    else if(decider == 2){
-                        game.changeScore(opponentScore);
-                    }
-                }            }
+                updateGame();
+            }
         });
 
         spock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("spock", clientIP.getText().toString(), Server.APP_PORT);
-                userMove = "spock";
+                game.sendMove("spock", clientIP.getText().toString());
                 moveCheck[0] = "spock";
-                boolean bothMoves = MoveSentCheck.checkIfMovesExist(moveCheck);
-                if(!bothMoves){
-
-                }else if(bothMoves){
-                    game.calculateWinner(userMove, moveCheck[1],result);
-                    if(decider == 1){
-                        game.changeScore(userScore);
-                    }
-                    else if(decider == 2){
-                        game.changeScore(opponentScore);
-                    }
-                }            }
+                updateGame();
+            }
         });
-
 
         final AlertDialog.Builder rageQuit = new AlertDialog.Builder(GameScreen.this);
         rageQuit.setMessage("Are you sure you would like to quit?");
@@ -160,6 +103,7 @@ x                if(!opponentSent){
                 startActivity(backToMainScreen);
             }
         });
+
         rageQuit.setPositiveButton("Resume", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -167,9 +111,6 @@ x                if(!opponentSent){
             }
         });
         final AlertDialog quitPressed = rageQuit.create();
- ;
-
-
 
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,24 +120,16 @@ x                if(!opponentSent){
         });
     }
 
-    public void setOpponentMoveToTextView(final String move, final TextView userMove){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                userMove.setText(move);
-            }
-        });
-    }
-    public static String playerChoices (String userChoice, String opponentChoice, TextView user){
+    public static String playerChoices(String userChoice, String opponentChoice) {
         String winOrLose = "Play!";//0 = tie, 1 = user wins/opponent loses, 2 = user loses/opponent wins
 
         if(userChoice == "rock"){
             if (opponentChoice == "scissors" || opponentChoice == "lizard"){
-                winOrLose = "Rock beats" + " " + opponentChoice + "!";
+                winOrLose = "Rock beats " + " " + opponentChoice + "!";
                 decider = 1;
             }
             else if (opponentChoice == "spock" || opponentChoice == "paper"){
-                winOrLose = "Rock lost to" + " " + opponentChoice + "!";
+                winOrLose = "Rock lost to " + " " + opponentChoice + "!";
                 decider = 2;
             }
             else if (opponentChoice == "rock"){
@@ -207,11 +140,11 @@ x                if(!opponentSent){
 
         else if(userChoice == "paper"){
             if (opponentChoice == "rock" || opponentChoice == "spock"){
-                winOrLose = "Paper beats" + " " + opponentChoice + "!";
+                winOrLose = "Paper beats " + " " + opponentChoice + "!";
                 decider = 1;
             }
             else if (opponentChoice == "scissors" || opponentChoice == "lizard"){
-                winOrLose = "Paper lost to" + " " + opponentChoice + "!";
+                winOrLose = "Paper lost to " + " " + opponentChoice + "!";
                 decider = 2;
             }
             else if (opponentChoice == "paper"){
@@ -221,11 +154,11 @@ x                if(!opponentSent){
         }
         else if(userChoice == "scissors"){
             if (opponentChoice == "paper" || opponentChoice == "lizard"){
-                winOrLose = "Scissors beats" + " " + opponentChoice + "!";
+                winOrLose = "Scissors beats " + " " + opponentChoice + "!";
                 decider = 1;
             }
             else if (opponentChoice == "spock" || opponentChoice == "rock"){
-                winOrLose = "Scissors lost to" + " " + opponentChoice + "!";
+                winOrLose = "Scissors lost to " + " " + opponentChoice + "!";
                 decider = 2;
             }
             else if (opponentChoice == "scissors"){
@@ -235,11 +168,11 @@ x                if(!opponentSent){
         }
         else if(userChoice == "lizard"){
             if (opponentChoice == "paper" || opponentChoice == "spock"){
-                winOrLose = "Lizard beats" + " " + opponentChoice + "!";
+                winOrLose = "Lizard beats " + " " + opponentChoice + "!";
                 decider = 1;
             }
             else if (opponentChoice == "scissors" || opponentChoice == "rock"){
-                winOrLose = "Lizard lost to" + " " + opponentChoice + "!";
+                winOrLose = "Lizard lost to " + " " + opponentChoice + "!";
                 decider = 2;
             }
             else if (opponentChoice == "lizard"){
@@ -249,11 +182,11 @@ x                if(!opponentSent){
         }
         else if(userChoice == "spock"){
             if (opponentChoice == "rock" || opponentChoice == "scissors"){
-                winOrLose = "Spock beats" + " " + opponentChoice + "!";
+                winOrLose = "Spock beats " + " " + opponentChoice + "!";
                 decider = 1;
             }
             else if (opponentChoice == "paper" || opponentChoice == "lizard"){
-                winOrLose = "Spock lost to" + " " + opponentChoice + "!";
+                winOrLose = "Spock lost to " + " " + opponentChoice + "!";
                 decider = 2;
             }
             else if (opponentChoice == "spock"){
@@ -261,9 +194,32 @@ x                if(!opponentSent){
                 decider = 0;
             }
         }
+
         return winOrLose;
     }
 
+    private boolean haveBothMoves() {
+        return (moveCheck[0] != null && moveCheck[1] != null);
+    }
+
+    private void updateScore() {
+        if(decider == 1){
+            game.changeScore(userScore);
+        }
+
+        else if(decider == 2){
+            game.changeScore(opponentScore);
+        }
+    }
+
+    private void updateGame() {
+        if (haveBothMoves()) {
+            userMove = moveCheck[0];
+            opponentMove = moveCheck[1];
+            game.calculateWinner(userMove, opponentMove, result);
+            updateScore();
+        }
+    }
 
     private void setUpServer(){
         new Thread(new Runnable() {
@@ -272,22 +228,9 @@ x                if(!opponentSent){
                 try{
                     Server.get().addListener(new ServerListener() {
                         @Override
-                        public void notifyConnection(String target) {
-                            opponentMove = target;
-                            opponentSent = true;
-                            if(!userSent){
-
-                            }else if(userSent){
-                                game.calculateWinner(userMove,opponentMove,result);
-                            }
-                            Log.d("GameScreen: ","notifyConnection: " + opponentMove);
-                            Log.d("GameScreen: ","notifyConnection: " + userMove);
-                            if(decider == 1){
-                                game.changeScore(userScore);
-                            }
-                            else if(decider == 2){
-                                game.changeScore(opponentScore);
-                            }
+                        public void notifyConnection(String move) {
+                            moveCheck[1] = move;
+                            updateGame();
                         }
                     });
                     Server.get().listen();

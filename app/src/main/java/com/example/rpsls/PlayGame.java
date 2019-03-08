@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.net.Socket;
 
-public class PlayGame extends GameScreen{
+public class PlayGame extends GameScreen {
 
     /**
      * Adapted from the class created by gabriel on 2/18/19.
@@ -21,46 +21,41 @@ public class PlayGame extends GameScreen{
 
     private static GameScreen activity;
 
-    public PlayGame(GameScreen activity){
+    public PlayGame(GameScreen activity) {
         this.activity = activity;
     }
 
-    public static void sendMove(final String move, final String host, final int port){
+    public static void sendMove(final String move, final String host) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
-                    Socket target = new Socket(host, port);
+                try {
+                    Socket target = new Socket(host, Server.APP_PORT);
                     Connection.broadcast(target, move);
                     target.close();
-                }
-                catch(final Exception e){
-                    // Utilities.notifyException(GameScreen.class.getName(), );
+                } catch (final Exception e) {
                     Log.e(GameScreen.class.getName(), "Could not send move");
                 }
             }
         });
     }
 
-    public static void calculateWinner(final String userChoice, final String opponentChoice, final TextView showResult){
+    public static void calculateWinner(final String userChoice, final String opponentChoice, final TextView showResult) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String result = playerChoices(userChoice, opponentChoice, showResult);
+                String result = playerChoices(userChoice, opponentChoice);
                 showResult.setText(result);
             }
         });
     }
 
-    public void changeScore(final TextView score){
+    public void changeScore(final TextView score) {
         score.setText(Integer.parseInt(score.getText().toString()) + 1);
     }
 
-    public void clearMoves(final TextView userMove, final TextView opponentMove){
+    public void clearMoves(final TextView userMove, final TextView opponentMove) {
         userMove.setText(null);
         opponentMove.setText(null);
     }
-
-
-
 }
