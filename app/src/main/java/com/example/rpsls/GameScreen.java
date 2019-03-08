@@ -15,7 +15,6 @@ import java.net.Socket;
 
 public class GameScreen extends AppCompatActivity {
 
-    private String opponentMove;
     private String userMove;
     private TextView result;
     private PlayGame game;
@@ -53,6 +52,18 @@ public class GameScreen extends AppCompatActivity {
                 game.sendMove("rock", clientIP.getText().toString(), Server.APP_PORT);
                 userMove = "rock";
                 moveCheck[0] = "rock";
+                boolean bothMoves = MoveSentCheck.checkIfMovesExist(moveCheck);
+                if(!bothMoves){
+
+                }else if(bothMoves){
+                    game.calculateWinner(userMove, moveCheck[1],result);
+                    if(decider == 1){
+                        game.changeScore(userScore);
+                    }
+                    else if(decider == 2){
+                        game.changeScore(opponentScore);
+                    }
+                }
             }
         });
 
@@ -62,6 +73,18 @@ public class GameScreen extends AppCompatActivity {
                 game.sendMove("paper", clientIP.getText().toString(), Server.APP_PORT);
                 userMove = "paper";
                 moveCheck[0] = "paper";
+                boolean bothMoves = MoveSentCheck.checkIfMovesExist(moveCheck);
+                if(!bothMoves){
+
+                }else if(bothMoves){
+                    game.calculateWinner(userMove, moveCheck[1],result);
+                    if(decider == 1){
+                        game.changeScore(userScore);
+                    }
+                    else if(decider == 2){
+                        game.changeScore(opponentScore);
+                    }
+                }
             }
         });
 
@@ -71,7 +94,18 @@ public class GameScreen extends AppCompatActivity {
                 game.sendMove("scissors", clientIP.getText().toString(), Server.APP_PORT);
                 userMove = "scissors";
                 moveCheck[0] = "scissors";
-            }
+                boolean bothMoves = MoveSentCheck.checkIfMovesExist(moveCheck);
+                if(!bothMoves){
+
+                }else if(bothMoves){
+                    game.calculateWinner(userMove, moveCheck[1],result);
+                    if(decider == 1){
+                        game.changeScore(userScore);
+                    }
+                    else if(decider == 2){
+                        game.changeScore(opponentScore);
+                    }
+                }            }
         });
 
         lizard.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +114,18 @@ public class GameScreen extends AppCompatActivity {
                 game.sendMove("lizard", clientIP.getText().toString(), Server.APP_PORT);
                 userMove = "lizard";
                 moveCheck[0] = "lizard";
-            }
+                boolean bothMoves = MoveSentCheck.checkIfMovesExist(moveCheck);
+                if(!bothMoves){
+
+                }else if(bothMoves){
+                    game.calculateWinner(userMove, moveCheck[1],result);
+                    if(decider == 1){
+                        game.changeScore(userScore);
+                    }
+                    else if(decider == 2){
+                        game.changeScore(opponentScore);
+                    }
+                }            }
         });
 
         spock.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +134,18 @@ public class GameScreen extends AppCompatActivity {
                 game.sendMove("spock", clientIP.getText().toString(), Server.APP_PORT);
                 userMove = "spock";
                 moveCheck[0] = "spock";
-            }
+                boolean bothMoves = MoveSentCheck.checkIfMovesExist(moveCheck);
+                if(!bothMoves){
+
+                }else if(bothMoves){
+                    game.calculateWinner(userMove, moveCheck[1],result);
+                    if(decider == 1){
+                        game.changeScore(userScore);
+                    }
+                    else if(decider == 2){
+                        game.changeScore(opponentScore);
+                    }
+                }            }
         });
 
 
