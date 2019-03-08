@@ -33,8 +33,9 @@ public class PlayGame extends GameScreen {
                     Socket target = new Socket(host, Server.APP_PORT);
                     Connection.broadcast(target, move);
                     target.close();
+                    Log.d(TAG, "sendMove: Move sent.");
                 } catch (final Exception e) {
-                    Log.e(GameScreen.class.getName(), "Could not send move");
+                    Log.e(TAG, "sendMove: Could not send move.");
                 }
             }
         });
