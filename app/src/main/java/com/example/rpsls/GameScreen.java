@@ -16,12 +16,15 @@ import java.net.Socket;
 public class GameScreen extends AppCompatActivity {
 
     private String userMove;
+    private String opponentMove;
     private TextView result;
     private PlayGame game;
     public static int decider;
     private TextView opponentScore;
     private TextView userScore;
     private String [] moveCheck = new String [2];
+    private boolean userSent = false;
+    private boolean opponentSent = false;
 
 
 
@@ -51,12 +54,11 @@ public class GameScreen extends AppCompatActivity {
             public void onClick(View v) {
                 game.sendMove("rock", clientIP.getText().toString(), Server.APP_PORT);
                 userMove = "rock";
-                moveCheck[0] = "rock";
-                boolean bothMoves = MoveSentCheck.checkIfMovesExist(moveCheck);
-                if(!bothMoves){
+                userSent = true;
+                if(!opponentSent){
 
-                }else if(bothMoves){
-                    game.calculateWinner(userMove, moveCheck[1],result);
+                }else if(opponentSent){
+                    game.calculateWinner(userMove, opponentMove,result);
                     if(decider == 1){
                         game.changeScore(userScore);
                     }
@@ -271,13 +273,14 @@ public class GameScreen extends AppCompatActivity {
                     Server.get().addListener(new ServerListener() {
                         @Override
                         public void notifyConnection(String target) {
-                            moveCheck[1] = target;
-                            if(!MoveSentCheck.checkIfMovesExist(moveCheck)){
-                                //some code to wait until MoveSentCheck.checkIfMoveExist is true
-                            }else if(MoveSentCheck.checkIfMovesExist(moveCheck)){
-                                game.calculateWinner(userMove,target,result);
+                            opponentMove = target;
+                            opponentSent = true;
+                            if(!userSent){
+
+                            }else if(userSent){
+                                game.calculateWinner(userMove,opponentMove,result);
                             }
-                            Log.d("GameScreen: ","notifyConnection: " + target);
+                            Log.d("GameScreen: ","notifyConnection: " + opponentMove);
                             Log.d("GameScreen: ","notifyConnection: " + userMove);
                             if(decider == 1){
                                 game.changeScore(userScore);
