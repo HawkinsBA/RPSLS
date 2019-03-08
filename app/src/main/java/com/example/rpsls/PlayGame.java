@@ -25,22 +25,7 @@ public class PlayGame extends GameScreen {
         this.activity = activity;
     }
 
-    public static void sendMove(final String move, final String host) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Log.d(TAG, "sendMove: Opening socket.");
-                    Socket target = new Socket(host, Server.APP_PORT);
-                    Connection.broadcast(target, move);
-                    target.close();
-                    Log.d(TAG, "sendMove: Move sent.");
-                } catch (final Exception e) {
-                    Log.e(TAG, "sendMove: Could not send move.");
-                }
-            }
-        });
-    }
+
 
     public static void calculateWinner(final String userChoice, final String opponentChoice, final TextView showResult) {
         activity.runOnUiThread(new Runnable() {

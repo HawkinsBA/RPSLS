@@ -52,7 +52,7 @@ public class GameScreen extends AppCompatActivity {
         rock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.sendMove("rock", clientIP.getText().toString());
+                sendMove("rock", clientIP.getText().toString());
                 moveCheck[0] = "rock";
                 updateGame();
 
@@ -63,7 +63,7 @@ public class GameScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: Sending move to " + clientIP.getText().toString());
-                game.sendMove("paper", clientIP.getText().toString());
+                sendMove("paper", clientIP.getText().toString());
                 moveCheck[0] = "paper";
                 updateGame();
             }
@@ -73,7 +73,7 @@ public class GameScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: Sending move to " + clientIP.getText().toString());
-                game.sendMove("scissors", clientIP.getText().toString());
+                sendMove("scissors", clientIP.getText().toString());
                 moveCheck[0] = "scissors";
                 updateGame();
             }
@@ -83,7 +83,7 @@ public class GameScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: Sending move to " + clientIP.getText().toString());
-                game.sendMove("lizard", clientIP.getText().toString());
+                sendMove("lizard", clientIP.getText().toString());
                 moveCheck[0] = "lizard";
                 updateGame();
             }
@@ -93,7 +93,7 @@ public class GameScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: Sending move to " + clientIP.getText().toString());
-                game.sendMove("spock", clientIP.getText().toString());
+                sendMove("spock", clientIP.getText().toString());
                 moveCheck[0] = "spock";
                 updateGame();
             }
@@ -250,7 +250,20 @@ public class GameScreen extends AppCompatActivity {
 
     }
 
-
-
-
+    public static void sendMove(final String move, final String host) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Log.d(TAG, "sendMove: Opening socket.");
+                    Socket target = new Socket(host, Server.APP_PORT);
+                    Connection.broadcast(target, move);
+                    target.close();
+                    Log.d(TAG, "sendMove: Move sent.");
+                } catch (final Exception e) {
+                    Log.e(TAG, "sendMove: Could not send move.");
+                }
+            }
+        });
+    }
 }
