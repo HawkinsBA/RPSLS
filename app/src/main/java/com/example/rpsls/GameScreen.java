@@ -15,14 +15,16 @@ import java.net.Socket;
 
 public class GameScreen extends AppCompatActivity {
 
-    private String opponentMove;
     private String userMove;
+    private String opponentMove;
     private TextView result;
     private PlayGame game;
     public static int decider;
     private TextView opponentScore;
     private TextView userScore;
     private String [] moveCheck = new String [2];
+    private boolean userSent = false;
+    private boolean opponentSent = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class GameScreen extends AppCompatActivity {
                 game.sendMove("rock", clientIP.getText().toString());
                 moveCheck[0] = "rock";
                 updateGame();
+
             }
         });
 
