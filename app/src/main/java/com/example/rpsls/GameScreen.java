@@ -273,7 +273,7 @@ public class GameScreen extends AppCompatActivity {
                         public void notifyConnection(String target) {
                             moveCheck[1] = target;
                             if(!MoveSentCheck.checkIfMovesExist(moveCheck)){
-
+                                //some code to wait until MoveSentCheck.checkIfMoveExist is true
                             }else if(MoveSentCheck.checkIfMovesExist(moveCheck)){
                                 game.calculateWinner(userMove,target,result);
                             }
@@ -292,7 +292,6 @@ public class GameScreen extends AppCompatActivity {
                 catch (IOException e){
                     Log.e(GameScreen.class.getName(), "Could not connect to server");
                 }
-
             }
         }).start();
 
