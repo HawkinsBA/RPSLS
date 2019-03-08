@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class GameScreen extends AppCompatActivity {
+    final static String TAG = "GameScreen";
 
     private String userMove;
     private String opponentMove;
@@ -61,6 +62,7 @@ public class GameScreen extends AppCompatActivity {
         paper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick: Sending move to " + clientIP.getText().toString());
                 game.sendMove("paper", clientIP.getText().toString());
                 moveCheck[0] = "paper";
                 updateGame();
@@ -70,6 +72,7 @@ public class GameScreen extends AppCompatActivity {
         scissors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick: Sending move to " + clientIP.getText().toString());
                 game.sendMove("scissors", clientIP.getText().toString());
                 moveCheck[0] = "scissors";
                 updateGame();
@@ -79,6 +82,7 @@ public class GameScreen extends AppCompatActivity {
         lizard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick: Sending move to " + clientIP.getText().toString());
                 game.sendMove("lizard", clientIP.getText().toString());
                 moveCheck[0] = "lizard";
                 updateGame();
@@ -88,6 +92,7 @@ public class GameScreen extends AppCompatActivity {
         spock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick: Sending move to " + clientIP.getText().toString());
                 game.sendMove("spock", clientIP.getText().toString());
                 moveCheck[0] = "spock";
                 updateGame();
@@ -214,6 +219,7 @@ public class GameScreen extends AppCompatActivity {
 
     private void updateGame() {
         if (haveBothMoves()) {
+            Log.d(TAG, "updateGame: Resolving moves.");
             userMove = moveCheck[0];
             opponentMove = moveCheck[1];
             game.calculateWinner(userMove, opponentMove, result);
@@ -229,6 +235,7 @@ public class GameScreen extends AppCompatActivity {
                     Server.get().addListener(new ServerListener() {
                         @Override
                         public void notifyConnection(String move) {
+                            Log.d(TAG, "notifyConnection: Opponent move received.");
                             moveCheck[1] = move;
                             updateGame();
                         }
