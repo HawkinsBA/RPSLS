@@ -55,7 +55,7 @@ public class GameScreen extends AppCompatActivity {
                 game.sendMove("rock", clientIP.getText().toString(), Server.APP_PORT);
                 userMove = "rock";
                 userSent = true;
-                if(!opponentSent){
+x                if(!opponentSent){
 
                 }else if(opponentSent){
                     game.calculateWinner(userMove, opponentMove,result);
