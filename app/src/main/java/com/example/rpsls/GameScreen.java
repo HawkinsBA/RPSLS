@@ -251,6 +251,7 @@ public class GameScreen extends AppCompatActivity {
     }
 
     public void sendMove(final String move, final String host) {
+        Log.d(TAG, "About to send [" + move + "] to " + host);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -264,6 +265,6 @@ public class GameScreen extends AppCompatActivity {
                     Log.e(TAG, "sendMove: Could not send move.");
                 }
             }
-        });
+        }).start();
     }
 }
