@@ -23,7 +23,7 @@ public class Server {
     private ServerSocket acceptor;
     private ArrayList<ServerListener> listeners = new ArrayList<>();
 
-    private Server() throws IOException {
+    Server() throws IOException {
         acceptor = new ServerSocket(APP_PORT);
     }
 

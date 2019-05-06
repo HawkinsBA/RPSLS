@@ -14,16 +14,19 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class GameScreen extends AppCompatActivity {
+
+    public GameScreen(){
+
+    }
     final static String TAG = "GameScreen";
 
-    private String userMove;
-    private String opponentMove;
-    private TextView result;
-    private PlayGame game;
+    String userMove;
+    String opponentMove;
+    TextView result;
     public static int decider;
     private TextView opponentScore;
     private TextView userScore;
-    private String [] moveCheck = new String [2];
+    public String [] moveCheck = new String [2];
     private boolean userSent = false;
     private boolean opponentSent = false;
 
@@ -42,7 +45,8 @@ public class GameScreen extends AppCompatActivity {
         Button lizard = findViewById(R.id.lizard);
         Button spock = findViewById(R.id.spock);
         Button quit = findViewById(R.id.quitButton);
-        game = new PlayGame(this);
+        userScore = findViewById(R.id.userScore);
+        opponentScore = findViewById(R.id.opponentScore);
 
 
         Intent i = getIntent();
@@ -128,73 +132,73 @@ public class GameScreen extends AppCompatActivity {
     public static String playerChoices(String userChoice, String opponentChoice) {
         String winOrLose = "Play!";//0 = tie, 1 = user wins/opponent loses, 2 = user loses/opponent wins
 
-        if(userChoice == "rock"){
-            if (opponentChoice == "scissors" || opponentChoice == "lizard"){
-                winOrLose = "Rock beats " + " " + opponentChoice + "!";
+        if(userChoice.equals("rock")){
+            if (opponentChoice.equals("scissors") || opponentChoice.equals("lizard")){
+                winOrLose = "Rock beats" + " " + opponentChoice + "!";
                 decider = 1;
             }
-            else if (opponentChoice == "spock" || opponentChoice == "paper"){
-                winOrLose = "Rock lost to " + " " + opponentChoice + "!";
+            else if (opponentChoice.equals("spock") || opponentChoice.equals("paper")){
+                winOrLose = "Rock lost to" + " " + opponentChoice + "!";
                 decider = 2;
             }
-            else if (opponentChoice == "rock"){
+            else if (opponentChoice.equals("rock")){
                 winOrLose = "It's a tie!";
                 decider = 0;
             }
         }
 
-        else if(userChoice == "paper"){
-            if (opponentChoice == "rock" || opponentChoice == "spock"){
-                winOrLose = "Paper beats " + " " + opponentChoice + "!";
+        else if(userChoice.equals("paper")){
+            if (opponentChoice.equals("rock") || opponentChoice.equals("spock")){
+                winOrLose = "Paper beats" + " " + opponentChoice + "!";
                 decider = 1;
             }
-            else if (opponentChoice == "scissors" || opponentChoice == "lizard"){
-                winOrLose = "Paper lost to " + " " + opponentChoice + "!";
+            else if (opponentChoice.equals("scissors") || opponentChoice.equals("lizard")){
+                winOrLose = "Paper lost to" + " " + opponentChoice + "!";
                 decider = 2;
             }
-            else if (opponentChoice == "paper"){
+            else if (opponentChoice.equals("paper")){
                 winOrLose = "It's a tie!";
                 decider = 0;
             }
         }
-        else if(userChoice == "scissors"){
-            if (opponentChoice == "paper" || opponentChoice == "lizard"){
-                winOrLose = "Scissors beats " + " " + opponentChoice + "!";
+        else if(userChoice.equals("scissors")){
+            if (opponentChoice.equals("paper") || opponentChoice.equals("lizard")){
+                winOrLose = "Scissors beats" + " " + opponentChoice + "!";
                 decider = 1;
             }
-            else if (opponentChoice == "spock" || opponentChoice == "rock"){
-                winOrLose = "Scissors lost to " + " " + opponentChoice + "!";
+            else if (opponentChoice.equals("spock") || opponentChoice.equals("rock")){
+                winOrLose = "Scissors lost to" + " " + opponentChoice + "!";
                 decider = 2;
             }
-            else if (opponentChoice == "scissors"){
+            else if (opponentChoice.equals("scissors")){
                 winOrLose = "It's a tie!";
                 decider = 0;
             }
         }
-        else if(userChoice == "lizard"){
-            if (opponentChoice == "paper" || opponentChoice == "spock"){
-                winOrLose = "Lizard beats " + " " + opponentChoice + "!";
+        else if(userChoice.equals("lizard")){
+            if (opponentChoice.equals("paper") || opponentChoice.equals("spock")){
+                winOrLose = "Lizard beats" + " " + opponentChoice + "!";
                 decider = 1;
             }
-            else if (opponentChoice == "scissors" || opponentChoice == "rock"){
-                winOrLose = "Lizard lost to " + " " + opponentChoice + "!";
+            else if (opponentChoice.equals("scissors") || opponentChoice.equals("rock")){
+                winOrLose = "Lizard lost to" + " " + opponentChoice + "!";
                 decider = 2;
             }
-            else if (opponentChoice == "lizard"){
+            else if (opponentChoice.equals("lizard")){
                 winOrLose = "It's a tie!";
                 decider = 0;
             }
         }
-        else if(userChoice == "spock"){
-            if (opponentChoice == "rock" || opponentChoice == "scissors"){
-                winOrLose = "Spock beats " + " " + opponentChoice + "!";
+        else if(userChoice.equals("spock")){
+            if (opponentChoice.equals("rock") || opponentChoice.equals("scissors")){
+                winOrLose = "Spock beats" + " " + opponentChoice + "!";
                 decider = 1;
             }
-            else if (opponentChoice == "paper" || opponentChoice == "lizard"){
-                winOrLose = "Spock lost to " + " " + opponentChoice + "!";
+            else if (opponentChoice.equals("paper") || opponentChoice.equals("lizard")){
+                winOrLose = "Spock lost to" + " " + opponentChoice + "!";
                 decider = 2;
             }
-            else if (opponentChoice == "spock"){
+            else if (opponentChoice.equals("spock")){
                 winOrLose = "It's a tie!";
                 decider = 0;
             }
@@ -203,31 +207,42 @@ public class GameScreen extends AppCompatActivity {
         return winOrLose;
     }
 
-    private boolean haveBothMoves() {
+    public boolean haveBothMoves() {
         return (moveCheck[0] != null && moveCheck[1] != null);
     }
 
-    private void updateScore() {
+    public void changeScore(final TextView score) {
+        score.setText(Integer.parseInt(score.getText().toString()) + 1);
+    }
+
+    void updateScore() {
         if(decider == 1){
-            game.changeScore(userScore);
+            changeScore(userScore);
         }
 
         else if(decider == 2){
-            game.changeScore(opponentScore);
+            changeScore(opponentScore);
         }
     }
 
-    private void updateGame() {
+    public void calculateWinner(final String userChoice, final String opponentChoice, final TextView showResult) {
+        String result = playerChoices(userChoice, opponentChoice);
+        showResult.setText(result);
+    }
+
+    void updateGame() {
+        String results;
         if (haveBothMoves()) {
-            Log.d(TAG, "updateGame: Resolving moves.");
+            //Log.d(TAG, "updateGame: Resolving moves.");
             userMove = moveCheck[0];
             opponentMove = moveCheck[1];
-            game.calculateWinner(userMove, opponentMove, result);
+            results = playerChoices(userMove, opponentMove);
+            result.setText(results);
             updateScore();
         }
     }
 
-    private void setUpServer(){
+    void setUpServer(){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -235,7 +250,7 @@ public class GameScreen extends AppCompatActivity {
                     Server.get().addListener(new ServerListener() {
                         @Override
                         public void notifyConnection(String move) {
-                            Log.d(TAG, "notifyConnection: Opponent move received.");
+                            //Log.d(TAG, "notifyConnection: Opponent move received.");
                             moveCheck[1] = move;
                             updateGame();
                         }
@@ -243,7 +258,7 @@ public class GameScreen extends AppCompatActivity {
                     Server.get().listen();
                 }
                 catch (IOException e){
-                    Log.e(GameScreen.class.getName(), "Could not connect to server");
+                    //Log.e(GameScreen.class.getName(), "Could not connect to server");
                 }
             }
         }).start();
