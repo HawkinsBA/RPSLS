@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
 
-//TODO: Test invite resolution host-side.
-
 public class MainActivity extends AppCompatActivity {
     final static String TAG = "MainActivity";
 
@@ -29,12 +27,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initComponents();
+        initUI();
         initServer();
         initClient();
     }
 
-    public void initComponents() {
+    public void initUI() {
         myIPView = findViewById(R.id.myIPView);
         targetIP = findViewById(R.id.host);
         connect = findViewById(R.id.start);
@@ -49,11 +47,11 @@ public class MainActivity extends AppCompatActivity {
             myIPView.setText("Could not determine your IP address.");
         }
 
-        View howToPlayView = getLayoutInflater().inflate(R.layout.how_to_play_dialog, null);
+        View howToPlayView = getLayoutInflater().inflate(R.layout.dialog_tutorial, null);
         AlertDialog.Builder howToPlayBuilder = new AlertDialog.Builder(MainActivity.this);
         howToPlayBuilder.setView(howToPlayView);
         final AlertDialog howToPlayDialog = howToPlayBuilder.create();
-        howToPlayDialog.setContentView(R.layout.how_to_play_dialog);
+        howToPlayDialog.setContentView(R.layout.dialog_tutorial);
         gotIt = howToPlayView.findViewById(R.id.done);
 
 
@@ -115,11 +113,11 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog initResponseDialog(boolean inviteAccepted) {
         Log.d(TAG, "initInviteResolutionDialog: Initializing invite response dialog.");
-        View resolutionView = getLayoutInflater().inflate(R.layout.invite_response_dialog, null);
+        View resolutionView = getLayoutInflater().inflate(R.layout.dialog_response, null);
         AlertDialog.Builder resolutionBuilder = new AlertDialog.Builder(MainActivity.this);
         resolutionBuilder.setView(resolutionView);
         final AlertDialog inviteResolutionDialog = resolutionBuilder.create();
-        inviteResolutionDialog.setContentView(R.layout.invite_response_dialog);
+        inviteResolutionDialog.setContentView(R.layout.dialog_response);
 
         final String opponentIP = targetIP.getText().toString();
         resolve = resolutionView.findViewById(R.id.resolve);
@@ -131,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
             resolve.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent toGameIntent = new Intent(MainActivity.this, GameScreen.class);
-                    toGameIntent.putExtra("opponentIP", opponentIP);
+                    Intent toGameIntent = new Intent(MainActivity.this, GameActivity.class);
+                    toGameIntent.putExtra("OPPONENT_IP", opponentIP);
                     startActivity(toGameIntent);
                 }
             });
@@ -152,11 +150,11 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog initIncomingInviteDialog(final String incomingIP) {
         Log.d(TAG, "initInviteDialog: Initializing invite dialog.");
-        View inviteView = getLayoutInflater().inflate(R.layout.invite_dialog, null);
+        View inviteView = getLayoutInflater().inflate(R.layout.dialog_invite, null);
         AlertDialog.Builder inviteBuilder = new AlertDialog.Builder(MainActivity.this);
         inviteBuilder.setView(inviteView);
         final AlertDialog incomingInviteDialog = inviteBuilder.create();
-        incomingInviteDialog.setContentView(R.layout.invite_dialog);
+        incomingInviteDialog.setContentView(R.layout.dialog_invite);
 
         accept = inviteView.findViewById(R.id.accept);
         decline = inviteView.findViewById(R.id.decline);
@@ -177,8 +175,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Incoming invite accepted.");
                 sendResponse(incomingIP, "yes");
-                Intent toGameIntent = new Intent(MainActivity.this, GameScreen.class);
-                toGameIntent.putExtra("opponentIP", incomingIP);
+                Intent toGameIntent = new Intent(MainActivity.this, GameActivity.class);
+                toGameIntent.putExtra("OPPONENT_IP", incomingIP);
                 startActivity(toGameIntent);
             }
         });
