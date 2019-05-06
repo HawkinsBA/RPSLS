@@ -18,7 +18,7 @@ public class GameActivity extends AppCompatActivity {
     final static String TAG = "GameActivity";
     private String opponentIP;
     private int decider, userScore, opponentScore;
-    private ArrayList<String> moveCheck = new ArrayList<>();
+    ArrayList<String> moveCheck = new ArrayList<>();
     private TextView result, opponentScoreView, userScoreView;
 
     @Override
